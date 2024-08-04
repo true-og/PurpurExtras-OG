@@ -1,0 +1,52 @@
+settings:
+  furnace:
+    burn-time:
+      multiplier: 1.0
+      enabled: false
+  rideables:
+    mob-needs-to-be-nametagged-to-ride: false
+  gameplay-settings:
+    open-iron-doors-with-hand: false
+    open-iron-trapdoors-with-hand: false
+    fall-damage-when-jump-boost-applied: true
+    respawn-anchor-needs-charges: true
+    run-faster-on-paths:
+      speed-multiplier: 1.5
+      path-blocks:
+      - DIRT_PATH
+    cancel-damage-from-pet-owner: true
+  dye-boss-bars: false
+  anvil-crushes-blocks:
+    blocks:
+      cobblestone: sand
+    enabled: false
+  unlock-all-recipes-on-join: false
+  stonecutter-damage-filter:
+    blacklist:
+    - player
+    enabled: true
+  use-notarget-permissions: false
+  blocks:
+    chorus-flowers-always-drop: false
+    shift-right-click-for-invisible-item-frames: false
+  creeper-squid:
+    enabled: false
+  totem:
+    work-on-void-death: false
+  raid-totem-drops:
+    chance: 0
+    enabled: false
+  chat:
+    escape-commands: true
+  loom:
+    max-layers: 6
+  dispenser:
+    break-blocks:
+      pickaxe: false
+      shovel: false
+      hoe: false
+      axe: false
+      shears: false
+    shears-shear-pumpkin: false
+    puts-discs-in-jukebox: false
+    interact-with-cauldron: false

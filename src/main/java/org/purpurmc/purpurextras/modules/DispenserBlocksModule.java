@@ -17,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.purpurmc.purpurextras.PurpurConfig;
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 import org.purpurmc.purpurextras.util.ItemStackUtil;
 
 import java.util.Map;
@@ -41,7 +41,7 @@ import java.util.Map;
  */
 public class DispenserBlocksModule implements PurpurExtrasModule, Listener {
 
-    private static final MaterialSetTag CAULDRON_BUCKETS = new MaterialSetTag(new NamespacedKey(PurpurExtras.getInstance(), "cauldron_buckets"))
+    private static final MaterialSetTag CAULDRON_BUCKETS = new MaterialSetTag(new NamespacedKey(PurpurExtrasOG.getInstance(), "cauldron_buckets"))
             .add(Material.BUCKET)
             .add(Material.WATER_BUCKET)
             .add(Material.LAVA_BUCKET)
@@ -61,7 +61,7 @@ public class DispenserBlocksModule implements PurpurExtrasModule, Listener {
             shearPumpkin, activateJukebox, interactWithCauldron;
 
     protected DispenserBlocksModule() {
-        PurpurConfig config = PurpurExtras.getPurpurConfig();
+        PurpurConfig config = PurpurExtrasOG.getPurpurConfig();
         breakBlockPickaxe = config.getBoolean("settings.dispenser.break-blocks.pickaxe", false);
         breakBlockShovel = config.getBoolean("settings.dispenser.break-blocks.shovel", false);
         breakBlockHoe = config.getBoolean("settings.dispenser.break-blocks.hoe", false);
@@ -75,7 +75,7 @@ public class DispenserBlocksModule implements PurpurExtrasModule, Listener {
 
     @Override
     public void enable() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -166,6 +166,7 @@ public class DispenserBlocksModule implements PurpurExtrasModule, Listener {
                         event.setCancelled(true);
                         return;
                     }
+                    default -> throw new IllegalArgumentException("Unexpected value in DispenserBlockModule: " + dispensedItemType);
                 }
             }
             if(!dispensedItemType.equals(Material.BUCKET)) return;
@@ -186,6 +187,7 @@ public class DispenserBlocksModule implements PurpurExtrasModule, Listener {
                     fullCauldronHandler(block, item, blockDispenser, Material.POWDER_SNOW_BUCKET, Sound.ITEM_BUCKET_FILL_POWDER_SNOW);
                     event.setCancelled(true);
                 }
+				default -> throw new IllegalArgumentException("Unexpected value in DispenserBlockModule: " + dispensedItemType);
             }
         }
     }

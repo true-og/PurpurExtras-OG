@@ -10,7 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.permissions.PermissionDefault;
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -30,7 +30,7 @@ public class SpawnerPlacementPermissionsModule implements PurpurExtrasModule, Li
 
     @Override
     public void enable() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         for (EntityType type : EntityType.values())
         {
@@ -45,7 +45,7 @@ public class SpawnerPlacementPermissionsModule implements PurpurExtrasModule, Li
 
     @Override
     public boolean shouldEnable() {
-        return PurpurExtras.getPurpurConfig().getBoolean("settings.gameplay-settings.spawner-placement-requires-specific-permission", false);
+        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.gameplay-settings.spawner-placement-requires-specific-permission", false);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

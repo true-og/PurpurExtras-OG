@@ -1,6 +1,6 @@
 package org.purpurmc.purpurextras.modules;
 
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 import org.purpurmc.purpurextras.PurpurConfig;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -23,23 +23,23 @@ import java.util.List;
 public class BeeHiveLoreModule implements PurpurExtrasModule, Listener {
 
     private final String beeHiveLoreBees, beeHiveLoreHoney;
-    private final MiniMessage miniMessage = PurpurExtras.getInstance().miniMessage;
+    private final MiniMessage miniMessage = PurpurExtrasOG.getInstance().miniMessage;
 
     protected BeeHiveLoreModule() {
-        PurpurConfig config = PurpurExtras.getPurpurConfig();
+        PurpurConfig config = PurpurExtrasOG.getPurpurConfig();
         this.beeHiveLoreBees = config.getString("settings.items.beehive-lore.bees", "<reset><gray>Bees: <bees>/<maxbees>");
         this.beeHiveLoreHoney = config.getString("settings.items.beehive-lore.honey", "<reset><gray>Honey level: <honey>/<maxhoney>");
     }
 
     @Override
     public void enable() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public boolean shouldEnable() {
-        return PurpurExtras.getPurpurConfig().getBoolean("settings.items.beehive-lore.enabled", false);
+        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.items.beehive-lore.enabled", false);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -96,4 +96,5 @@ public class BeeHiveLoreModule implements PurpurExtrasModule, Listener {
         beeHiveLoreHoneyString = beeHiveLoreHoneyString.replaceAll("<maxhoney>", String.valueOf(maxHoney));
         return miniMessage.deserializeOrNull(beeHiveLoreHoneyString);
     }
+    
 }

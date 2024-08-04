@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,13 +22,13 @@ public class StopDropNRollModule implements PurpurExtrasModule, Listener {
     private double amount;
 
     protected StopDropNRollModule() {
-        chance = PurpurExtras.getPurpurConfig().getDouble("settings.twerk-to-reduce-burn-time.chance", 0);
-        amount = PurpurExtras.getPurpurConfig().getDouble("settings.twerk-to-reduce-burn-time.amount", 0.5);
+        chance = PurpurExtrasOG.getPurpurConfig().getDouble("settings.twerk-to-reduce-burn-time.chance", 0);
+        amount = PurpurExtrasOG.getPurpurConfig().getDouble("settings.twerk-to-reduce-burn-time.amount", 0.5);
     }
 
     @Override
     public void enable() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 

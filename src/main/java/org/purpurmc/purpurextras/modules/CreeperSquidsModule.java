@@ -17,7 +17,7 @@ import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 import java.util.Collection;
 import java.util.EnumSet;
@@ -37,16 +37,16 @@ public class CreeperSquidsModule implements PurpurExtrasModule, Listener {
 
     @Override
     public void enable() {
-        Bukkit.getServer().getPluginManager().registerEvents(this, PurpurExtras.getInstance());
-        maxSwell = PurpurExtras.getPurpurConfig().getInt("settings.creeper-squid.fuse-ticks", 30);
-        maxDistance = (int) Math.pow(PurpurExtras.getPurpurConfig().getInt("settings.creeper-squid.agro-distance", 7), 2);
-        explosionPower = PurpurExtras.getPurpurConfig().getInt("settings.creeper-squid.explosion-radius", 3);
-        velocity = PurpurExtras.getPurpurConfig().getDouble("settings.creeper-squid.velocity", 0.5);
+        Bukkit.getServer().getPluginManager().registerEvents(this, PurpurExtrasOG.getInstance());
+        maxSwell = PurpurExtrasOG.getPurpurConfig().getInt("settings.creeper-squid.fuse-ticks", 30);
+        maxDistance = (int) Math.pow(PurpurExtrasOG.getPurpurConfig().getInt("settings.creeper-squid.agro-distance", 7), 2);
+        explosionPower = PurpurExtrasOG.getPurpurConfig().getInt("settings.creeper-squid.explosion-radius", 3);
+        velocity = PurpurExtrasOG.getPurpurConfig().getDouble("settings.creeper-squid.velocity", 0.5);
     }
 
     @Override
     public boolean shouldEnable() {
-        return PurpurExtras.getPurpurConfig().getBoolean("settings.creeper-squid.enabled", false);
+        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.creeper-squid.enabled", false);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
@@ -60,7 +60,7 @@ public class CreeperSquidsModule implements PurpurExtrasModule, Listener {
     //good chunk of this logic pulled directly from nms
     private final class SquidGoal implements Goal<Squid> {
 
-        private static final GoalKey<Squid> goalKey = GoalKey.of(Squid.class, PurpurExtras.key("squidgoal"));
+        private static final GoalKey<Squid> goalKey = GoalKey.of(Squid.class, PurpurExtrasOG.key("squidgoal"));
         private static final Predicate<Player> playerPredicate = player -> !player.hasPotionEffect(PotionEffectType.INVISIBILITY) &&
                 !player.isInvisible() && player.isValid() && (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE);
         private final Squid squid;
@@ -129,7 +129,7 @@ public class CreeperSquidsModule implements PurpurExtrasModule, Listener {
             if (!event.isCancelled()) {
                 squid.remove();
                 squid.getWorld().createExplosion(squid, squid.getLocation(), explosionPower);
-                Bukkit.getScheduler().runTaskLater(PurpurExtras.getInstance(),
+                Bukkit.getScheduler().runTaskLater(PurpurExtrasOG.getInstance(),
                         () -> squid.getWorld().playSound(squid.getLocation(), Sound.ENTITY_CREEPER_DEATH, 1f, 0.5f), 1);
             } else {
                 this.currentSwell = 0;

@@ -13,7 +13,7 @@ import org.bukkit.event.world.TimeSkipEvent;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.util.permissions.DefaultPermissions;
 import org.purpurmc.purpurextras.PurpurConfig;
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 import java.util.List;
 
@@ -21,19 +21,19 @@ import java.util.List;
  * If enabled, sends messages in chat containing amount of players required to sleep based on playersSleepingPercentage gamerule.
  */
 public class SleepPercentageMessageModule implements PurpurExtrasModule, Listener {
-    private final MiniMessage miniMsg = PurpurExtras.getInstance().miniMessage;
+    private final MiniMessage miniMsg = PurpurExtrasOG.getInstance().miniMessage;
     private final String playerSleepMessage, nightSkipMessage;
     private final String sleepMessageBypass = "purpurextras.sleepmessagebypass";
 
     protected SleepPercentageMessageModule() {
-        PurpurConfig config = PurpurExtras.getPurpurConfig();
+        PurpurConfig config = PurpurExtrasOG.getPurpurConfig();
         this.playerSleepMessage = config.getString("settings.chat.send-sleep-percentage-message.player-sleeping", "<grey><playername> has fallen asleep. <sleeping> out of <needed> required players in <worldname> are sleeping.");
         this.nightSkipMessage = config.getString("settings.chat.send-sleep-percentage-message.skipping-night", "<grey>Enough players have slept! Skipping through the night in <worldname>.");
     }
 
     @Override
     public void enable() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -42,7 +42,7 @@ public class SleepPercentageMessageModule implements PurpurExtrasModule, Listene
         DefaultPermissions.registerPermission(sleepMessageBypass, "Allows player to not display a message in chat when they sleep", PermissionDefault.OP);
         if ((playerSleepMessage == null || playerSleepMessage.isBlank()) && (nightSkipMessage == null || nightSkipMessage.isBlank()))
             return false;
-        return PurpurExtras.getPurpurConfig().getBoolean("settings.chat.send-sleep-percentage-message.enabled", false);
+        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.chat.send-sleep-percentage-message.enabled", false);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

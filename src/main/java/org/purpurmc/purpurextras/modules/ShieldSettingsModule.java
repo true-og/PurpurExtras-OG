@@ -1,7 +1,7 @@
 package org.purpurmc.purpurextras.modules;
 
 import org.bukkit.event.Listener;
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 import org.purpurmc.purpurextras.modules.listeners.ShieldCooldownListener;
 import org.purpurmc.purpurextras.modules.listeners.ShieldDamageReductionListener;
 
@@ -25,7 +25,7 @@ public class ShieldSettingsModule implements PurpurExtrasModule, Listener {
 
     @Override
     public void enable() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         if (shieldDamageReduction != DEFAULT_SHIELD_DAMAGE_REDUCTION) {
             plugin.getServer().getPluginManager().registerEvents(new ShieldDamageReductionListener(shieldDamageReduction), plugin);
         }
@@ -36,10 +36,10 @@ public class ShieldSettingsModule implements PurpurExtrasModule, Listener {
 
     @Override
     public boolean shouldEnable() {
-        shieldDamageReduction = PurpurExtras.getPurpurConfig().getDouble("settings.shield.damage-reduction", shieldDamageReduction);
+        shieldDamageReduction = PurpurExtrasOG.getPurpurConfig().getDouble("settings.shield.damage-reduction", shieldDamageReduction);
         shieldDamageReduction = Math.min(1.0, Math.max(0, shieldDamageReduction));
 
-        shieldCooldown = PurpurExtras.getPurpurConfig().getInt("settings.shield.cooldown", shieldCooldown);
+        shieldCooldown = PurpurExtrasOG.getPurpurConfig().getInt("settings.shield.cooldown", shieldCooldown);
         shieldCooldown = Math.max(0, shieldCooldown);
 
         return shieldDamageReduction != DEFAULT_SHIELD_DAMAGE_REDUCTION || shieldCooldown != DEFAULT_SHIELD_COOLDOWN;

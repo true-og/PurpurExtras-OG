@@ -1,11 +1,7 @@
 package org.purpurmc.purpurextras.modules;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.DecoratedPot;
-import org.bukkit.block.Vault;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -16,8 +12,11 @@ import org.bukkit.loot.Lootable;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.util.permissions.DefaultPermissions;
 import org.purpurmc.purpurextras.PurpurConfig;
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 import org.purpurmc.purpurextras.util.MessageType;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 
 /**
  * Prevents players from breaking blocks with loot tables that can regenerate loot.
@@ -32,7 +31,7 @@ public class LootBlocksProtectionModule implements PurpurExtrasModule, Listener 
     private final String permission = "purpurextras.lootblockprotectionbypass";
 
     protected LootBlocksProtectionModule() {
-        PurpurConfig config = PurpurExtras.getPurpurConfig();
+        PurpurConfig config = PurpurExtrasOG.getPurpurConfig();
 
         DefaultPermissions.registerPermission(
                 permission,
@@ -57,13 +56,13 @@ public class LootBlocksProtectionModule implements PurpurExtrasModule, Listener 
 
     @Override
     public void enable() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public boolean shouldEnable() {
-        return PurpurExtras.getPurpurConfig().getBoolean("settings.protect-blocks-with-loot.enabled", false);
+        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.protect-blocks-with-loot.enabled", false);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -101,7 +100,6 @@ public class LootBlocksProtectionModule implements PurpurExtrasModule, Listener 
         if (blockState instanceof Lootable lootable) {
             return lootable.hasLootTable();
         }
-        if (blockState instanceof Vault) return true;
         return false;
     }
 

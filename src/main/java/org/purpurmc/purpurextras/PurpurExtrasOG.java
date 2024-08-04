@@ -9,10 +9,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class PurpurExtras extends JavaPlugin {
+public final class PurpurExtrasOG extends JavaPlugin {
 
     private static PurpurConfig config;
-    private static PurpurExtras instance;
+    private static PurpurExtrasOG instance;
     public final MiniMessage miniMessage = MiniMessage.miniMessage();
 
     @Override
@@ -46,7 +46,7 @@ public final class PurpurExtras extends JavaPlugin {
         return config;
     }
 
-    public static PurpurExtras getInstance() {
+    public static PurpurExtrasOG getInstance() {
         return instance;
     }
 
@@ -60,7 +60,7 @@ public final class PurpurExtras extends JavaPlugin {
     }
 
     public static NamespacedKey key(String string) {
-        return new NamespacedKey(PurpurExtras.getInstance(), string);
+        return new NamespacedKey(PurpurExtrasOG.getInstance(), string);
     }
 
 }

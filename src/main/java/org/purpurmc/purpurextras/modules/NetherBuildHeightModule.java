@@ -11,7 +11,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.util.permissions.DefaultPermissions;
 import org.purpurmc.purpurextras.PurpurConfig;
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 /**
  * Adds a build height limit to the nether
@@ -33,21 +33,21 @@ public class NetherBuildHeightModule implements PurpurExtrasModule, Listener {
     private final String netherBuildHeightBypassPermission = "purpurextras.netherbuildheightbypass";
 
     protected NetherBuildHeightModule() {
-        PurpurConfig config = PurpurExtras.getPurpurConfig();
+        PurpurConfig config = PurpurExtrasOG.getPurpurConfig();
         this.configBuildHeight = config.getInt("settings.block-building-above-nether.height-limit", 128);
         this.noPermissionMessageContent = config.getString("settings.block-building-above-nether.no-permission-message", "<red>Max build height in this world is: <gold><height>");
     }
 
     @Override
     public void enable() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public boolean shouldEnable() {
         DefaultPermissions.registerPermission(netherBuildHeightBypassPermission, "Allows player to bypass the configured max nether build height", PermissionDefault.OP);
-        return PurpurExtras.getPurpurConfig().getBoolean("settings.block-building-above-nether.enabled", false);
+        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.block-building-above-nether.enabled", false);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -58,7 +58,7 @@ public class NetherBuildHeightModule implements PurpurExtrasModule, Listener {
         if (block.getLocation().getBlockY() < configBuildHeight) return;
         if (player.hasPermission(netherBuildHeightBypassPermission)) return;
         if (!"".equals(noPermissionMessageContent)) {
-            player.sendActionBar(PurpurExtras.getInstance().miniMessage.deserialize(noPermissionMessageContent, Placeholder.unparsed("height", String.valueOf(configBuildHeight))));
+            player.sendActionBar(PurpurExtrasOG.getInstance().miniMessage.deserialize(noPermissionMessageContent, Placeholder.unparsed("height", String.valueOf(configBuildHeight))));
         }
         event.setCancelled(true);
     }

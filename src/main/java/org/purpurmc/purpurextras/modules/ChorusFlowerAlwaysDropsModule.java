@@ -1,7 +1,7 @@
 package org.purpurmc.purpurextras.modules;
 
 import com.destroystokyo.paper.event.block.BlockDestroyEvent;
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -20,13 +20,13 @@ public class ChorusFlowerAlwaysDropsModule implements PurpurExtrasModule, Listen
 
     @Override
     public void enable() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public boolean shouldEnable() {
-        return PurpurExtras.getPurpurConfig().getBoolean("settings.blocks.chorus-flowers-always-drop", false);
+        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.blocks.chorus-flowers-always-drop", false);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

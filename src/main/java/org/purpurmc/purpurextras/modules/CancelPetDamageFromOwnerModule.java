@@ -7,7 +7,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.projectiles.ProjectileSource;
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 /**
  * If enabled, pet owners will not be able to harm their own pets.
@@ -18,13 +18,13 @@ public class CancelPetDamageFromOwnerModule implements PurpurExtrasModule, Liste
 
     @Override
     public void enable() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public boolean shouldEnable() {
-        return PurpurExtras.getPurpurConfig().getBoolean("settings.gameplay-settings.cancel-damage-from-pet-owner", false);
+        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.gameplay-settings.cancel-damage-from-pet-owner", false);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

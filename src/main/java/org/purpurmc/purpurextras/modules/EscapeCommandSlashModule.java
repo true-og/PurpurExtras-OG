@@ -1,7 +1,7 @@
 package org.purpurmc.purpurextras.modules;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -18,13 +18,13 @@ public class EscapeCommandSlashModule implements PurpurExtrasModule, Listener {
     protected EscapeCommandSlashModule() {}
     @Override
     public void enable() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public boolean shouldEnable() {
-        return PurpurExtras.getPurpurConfig().getBoolean("settings.chat.escape-commands", false);
+        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.chat.escape-commands", false);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

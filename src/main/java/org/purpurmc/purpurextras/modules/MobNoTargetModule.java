@@ -1,6 +1,6 @@
 package org.purpurmc.purpurextras.modules;
 
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,13 +15,13 @@ public class MobNoTargetModule implements PurpurExtrasModule, Listener {
     protected MobNoTargetModule() {}
     @Override
     public void enable() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public boolean shouldEnable() {
-        return PurpurExtras.getPurpurConfig().getBoolean("settings.use-notarget-permissions", false);
+        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.use-notarget-permissions", false);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

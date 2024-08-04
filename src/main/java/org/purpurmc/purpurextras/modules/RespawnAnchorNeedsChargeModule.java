@@ -1,6 +1,6 @@
 package org.purpurmc.purpurextras.modules;
 
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,13 +21,13 @@ public class RespawnAnchorNeedsChargeModule implements PurpurExtrasModule, Liste
     protected RespawnAnchorNeedsChargeModule() {}
     @Override
     public void enable() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public boolean shouldEnable() {
-        return !(PurpurExtras.getPurpurConfig().getBoolean("settings.gameplay-settings.respawn-anchor-needs-charges", true));
+        return !(PurpurExtrasOG.getPurpurConfig().getBoolean("settings.gameplay-settings.respawn-anchor-needs-charges", true));
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -43,7 +43,7 @@ public class RespawnAnchorNeedsChargeModule implements PurpurExtrasModule, Liste
                     if (!location.getBlock().getType().equals(Material.RESPAWN_ANCHOR))
                         continue;
                     Block potentialAnchor = location.getBlock();
-                    Bukkit.getScheduler().runTaskLater(PurpurExtras.getInstance(), () -> {
+                    Bukkit.getScheduler().runTaskLater(PurpurExtrasOG.getInstance(), () -> {
                         if (!potentialAnchor.getType().equals(Material.RESPAWN_ANCHOR))
                             return;
                         RespawnAnchor anchor = (RespawnAnchor) potentialAnchor.getBlockData();

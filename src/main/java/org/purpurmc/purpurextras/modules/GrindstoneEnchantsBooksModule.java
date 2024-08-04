@@ -1,6 +1,6 @@
 package org.purpurmc.purpurextras.modules;
 
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -36,16 +36,16 @@ public class GrindstoneEnchantsBooksModule implements PurpurExtrasModule, Listen
         try {
             Class.forName("org.purpurmc.purpur.event.inventory.GrindstoneTakeResultEvent");
         } catch (ClassNotFoundException e) {
-            PurpurExtras.getInstance().getLogger().warning(this.getClass().getSimpleName() + " module requires you to run Purpur as your server software.");
+            PurpurExtrasOG.getInstance().getLogger().warning(this.getClass().getSimpleName() + " module requires you to run Purpur as your server software.");
             return;
         }
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public boolean shouldEnable() {
-        return PurpurExtras.getPurpurConfig().getBoolean("settings.grindstone.gives-enchants-back", false);
+        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.grindstone.gives-enchants-back", false);
     }
 
     @EventHandler

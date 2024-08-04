@@ -1,12 +1,17 @@
 package org.purpurmc.purpurextras.modules;
 
-import io.papermc.paper.event.entity.EntityMoveEvent;
-import org.bukkit.event.entity.EntityMountEvent;
-import org.purpurmc.purpurextras.PurpurExtras;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Steerable;
+import org.bukkit.entity.Vehicle;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
+import org.spigotmc.event.entity.EntityMountEvent;
+
+import io.papermc.paper.event.entity.EntityMoveEvent;
 
 /**
  * If enabled, only nametagged mobs can be mounted/steered using purpur's rideable option.
@@ -16,13 +21,13 @@ public class ForceNametaggedForRidingModule implements PurpurExtrasModule, Liste
     protected ForceNametaggedForRidingModule() {}
     @Override
     public void enable() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public boolean shouldEnable() {
-        return PurpurExtras.getPurpurConfig().getBoolean("settings.rideables.mob-needs-to-be-nametagged-to-ride", false);
+        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.rideables.mob-needs-to-be-nametagged-to-ride", false);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

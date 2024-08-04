@@ -1,6 +1,6 @@
 package org.purpurmc.purpurextras.modules;
 
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -38,13 +38,13 @@ public class VoidTotemModule implements PurpurExtrasModule, Listener {
 
     @Override
     public void enable() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public boolean shouldEnable() {
-        return PurpurExtras.getPurpurConfig().getBoolean("settings.totem.work-on-void-death", false);
+        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.totem.work-on-void-death", false);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

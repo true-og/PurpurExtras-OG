@@ -1,16 +1,11 @@
 package org.purpurmc.purpurextras.modules;
 
-import net.kyori.adventure.key.Key;
-import net.kyori.adventure.sound.Sound;
-import org.bukkit.NamespacedKey;
 import org.bukkit.SoundCategory;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityUnleashEvent;
-import org.purpurmc.purpurextras.PurpurExtras;
-
-import java.util.Locale;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 /**
  * Adds a sound for when the leash snaps
@@ -22,20 +17,20 @@ public class LeashSnapSoundModule implements PurpurExtrasModule, Listener {
     private double pitch;
 
     protected LeashSnapSoundModule() {
-        sound = PurpurExtras.getPurpurConfig().getString("settings.leash-snap.sound", "minecraft:block.bamboo.break");
-        volume = PurpurExtras.getPurpurConfig().getDouble("settings.leash-snap.volume", 1f);
-        pitch = PurpurExtras.getPurpurConfig().getDouble("settings.leash-snap.pitch", 1.25f);
+        sound = PurpurExtrasOG.getPurpurConfig().getString("settings.leash-snap.sound", "minecraft:block.bamboo.break");
+        volume = PurpurExtrasOG.getPurpurConfig().getDouble("settings.leash-snap.volume", 1f);
+        pitch = PurpurExtrasOG.getPurpurConfig().getDouble("settings.leash-snap.pitch", 1.25f);
     }
 
     @Override
     public void enable() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public boolean shouldEnable() {
-        return PurpurExtras.getPurpurConfig().getBoolean("settings.leash-snap.enabled", false) && sound != null;
+        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.leash-snap.enabled", false) && sound != null;
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

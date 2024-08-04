@@ -1,6 +1,6 @@
 package org.purpurmc.purpurextras.modules;
 
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 import org.purpurmc.purpurextras.PurpurConfig;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -27,7 +27,7 @@ public class AnvilChangesBlocksModule implements PurpurExtrasModule, Listener {
     private final HashSet<Material> anvils = new HashSet<>();
     private final HashMap<Material, Material> anvilCrushBlocksIndex = new HashMap<>();
     protected AnvilChangesBlocksModule() {
-        PurpurConfig config = PurpurExtras.getPurpurConfig();
+        PurpurConfig config = PurpurExtrasOG.getPurpurConfig();
         Map<String, Object> defaults = new HashMap<>();
 
         anvils.add(Material.ANVIL);
@@ -36,7 +36,7 @@ public class AnvilChangesBlocksModule implements PurpurExtrasModule, Listener {
 
         defaults.put("cobblestone", "sand");
         ConfigurationSection section = config.getConfigSection("settings.anvil-crushes-blocks.blocks", defaults);
-        Logger logger = PurpurExtras.getInstance().getLogger();
+        Logger logger = PurpurExtrasOG.getInstance().getLogger();
         for (String key : section.getKeys(false)) {
             String matString = section.getString(key);
             if (matString == null) continue;
@@ -58,13 +58,13 @@ public class AnvilChangesBlocksModule implements PurpurExtrasModule, Listener {
 
     @Override
     public void enable() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public boolean shouldEnable() {
-        return PurpurExtras.getPurpurConfig().getBoolean("settings.anvil-crushes-blocks.enabled", false);
+        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.anvil-crushes-blocks.enabled", false);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -78,4 +78,5 @@ public class AnvilChangesBlocksModule implements PurpurExtrasModule, Listener {
 
         blockBelowAnvil.setType(anvilCrushBlocksIndex.get(blockBelowAnvil.getType()), true);
     }
+    
 }

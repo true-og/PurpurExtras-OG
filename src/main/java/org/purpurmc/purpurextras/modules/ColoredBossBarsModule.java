@@ -1,7 +1,7 @@
 package org.purpurmc.purpurextras.modules;
 
 import com.destroystokyo.paper.event.entity.EntityAddToWorldEvent;
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 import org.bukkit.NamespacedKey;
 import org.bukkit.boss.BarColor;
 import org.bukkit.entity.Boss;
@@ -20,18 +20,18 @@ import org.bukkit.persistence.PersistentDataType;
  */
 public class ColoredBossBarsModule implements PurpurExtrasModule, Listener {
 
-    private final NamespacedKey dyeColor = PurpurExtras.key("dyedColor");
+    private final NamespacedKey dyeColor = PurpurExtrasOG.key("dyedColor");
 
     protected ColoredBossBarsModule() {}
     @Override
     public void enable() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public boolean shouldEnable() {
-        return PurpurExtras.getPurpurConfig().getBoolean("settings.dye-boss-bars", false);
+        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.dye-boss-bars", false);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST,ignoreCancelled = true)

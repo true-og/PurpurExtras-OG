@@ -1,6 +1,6 @@
 package org.purpurmc.purpurextras.modules;
 
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 import org.bukkit.event.HandlerList;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
@@ -23,7 +23,7 @@ public interface PurpurExtrasModule {
 
     static void reloadModules() {
 
-        HandlerList.unregisterAll(PurpurExtras.getInstance());
+        HandlerList.unregisterAll(PurpurExtrasOG.getInstance());
 
         Set<Class<?>> subTypes = reflections.get(Scanners.SubTypes.of(PurpurExtrasModule.class).asClass());
 
@@ -34,7 +34,7 @@ public interface PurpurExtrasModule {
                     module.enable();
                 }
             } catch (Exception e) {
-                PurpurExtras.getInstance().getSLF4JLogger().warn("Failed to load module " + clazz.getSimpleName());
+                PurpurExtrasOG.getInstance().getSLF4JLogger().warn("Failed to load module " + clazz.getSimpleName());
             }
         });
 

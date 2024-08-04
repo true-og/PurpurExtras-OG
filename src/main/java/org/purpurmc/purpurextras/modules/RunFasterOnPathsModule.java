@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.purpurmc.purpurextras.PurpurConfig;
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,8 +33,8 @@ public class RunFasterOnPathsModule implements PurpurExtrasModule, Listener {
         List<String> defaults = new ArrayList<>();
         defaults.add(Material.DIRT_PATH.toString());
 
-        PurpurConfig config = PurpurExtras.getPurpurConfig();
-        Logger logger = PurpurExtras.getInstance().getLogger();
+        PurpurConfig config = PurpurExtrasOG.getPurpurConfig();
+        Logger logger = PurpurExtrasOG.getInstance().getLogger();
 
         int rawSpeedMultiplier = config.getInt("settings.gameplay-settings.run-faster-on-paths.speed-multiplier", 0);
         speedMultiplier = Math.max(0, rawSpeedMultiplier);
@@ -55,7 +55,7 @@ public class RunFasterOnPathsModule implements PurpurExtrasModule, Listener {
 
     @Override
     public void enable() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 

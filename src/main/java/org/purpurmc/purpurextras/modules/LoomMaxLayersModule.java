@@ -12,7 +12,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.meta.BannerMeta;
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,13 +27,13 @@ public class LoomMaxLayersModule implements PurpurExtrasModule, Listener {
     private int maxLayers;
 
     protected LoomMaxLayersModule() {
-        this.maxLayers = PurpurExtras.getPurpurConfig().getInt("settings.loom.max-layers", 6);
+        this.maxLayers = PurpurExtrasOG.getPurpurConfig().getInt("settings.loom.max-layers", 6);
         if (this.maxLayers <= 0) this.maxLayers = 6;
     }
 
     @Override
     public void enable() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -65,6 +65,7 @@ public class LoomMaxLayersModule implements PurpurExtrasModule, Listener {
                     }
                 }
                 case RESULT -> setNewPatternsToBanner(player, currentItem);
+			default -> throw new IllegalArgumentException("Unexpected value in LoomMaxLayersModule: " + event.getSlotType());
             }
         } else if (cursorItem != null && MaterialSetTag.BANNERS.isTagged(cursorItem.getType())) {
             if (doesNewLayerExceedMaxLayers(cursorItem)) return;

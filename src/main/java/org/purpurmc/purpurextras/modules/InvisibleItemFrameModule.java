@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.util.permissions.DefaultPermissions;
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 /**
  * Right click when sneaking on an item frame with item inside of it will make the item frame invisible.
@@ -25,14 +25,14 @@ public class InvisibleItemFrameModule implements PurpurExtrasModule, Listener {
 
     @Override
     public void enable() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public boolean shouldEnable() {
         DefaultPermissions.registerPermission(invisFramePermission, "Allows player to shift-right-click an item frame to turn it invisible", PermissionDefault.OP);
-        return PurpurExtras.getPurpurConfig().getBoolean("settings.blocks.shift-right-click-for-invisible-item-frames", false);
+        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.blocks.shift-right-click-for-invisible-item-frames", false);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

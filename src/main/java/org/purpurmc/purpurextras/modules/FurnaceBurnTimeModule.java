@@ -1,6 +1,6 @@
 package org.purpurmc.purpurextras.modules;
 
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -14,18 +14,18 @@ public class FurnaceBurnTimeModule implements PurpurExtrasModule, Listener {
     private final double furnaceBurnTimeMultiplier;
 
     protected FurnaceBurnTimeModule() {
-        furnaceBurnTimeMultiplier = PurpurExtras.getPurpurConfig().getDouble("settings.furnace.burn-time.multiplier", 1.0);
+        furnaceBurnTimeMultiplier = PurpurExtrasOG.getPurpurConfig().getDouble("settings.furnace.burn-time.multiplier", 1.0);
     }
 
     @Override
     public void enable() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public boolean shouldEnable() {
-        if (!PurpurExtras.getPurpurConfig().getBoolean("settings.furnace.burn-time.enabled", false)) return false;
+        if (!PurpurExtrasOG.getPurpurConfig().getBoolean("settings.furnace.burn-time.enabled", false)) return false;
         return furnaceBurnTimeMultiplier != 1.0;
     }
 

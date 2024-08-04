@@ -12,7 +12,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.raid.RaidSpawnWaveEvent;
 import org.bukkit.event.raid.RaidStopEvent;
 import org.bukkit.inventory.ItemStack;
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +29,7 @@ public class RaidTotemDropsModule implements PurpurExtrasModule, Listener {
     private final Map<UUID, Raider> raiders = new HashMap<>();
 
     protected RaidTotemDropsModule() {
-        dropChance = PurpurExtras.getPurpurConfig().getInt("settings.raid-totem-drops.chance", 0);
+        dropChance = PurpurExtrasOG.getPurpurConfig().getInt("settings.raid-totem-drops.chance", 0);
         random = new SplittableRandom();
     }
 
@@ -60,11 +60,11 @@ public class RaidTotemDropsModule implements PurpurExtrasModule, Listener {
 
     @Override
     public void enable() {
-        Bukkit.getServer().getPluginManager().registerEvents(this, PurpurExtras.getInstance());
+        Bukkit.getServer().getPluginManager().registerEvents(this, PurpurExtrasOG.getInstance());
     }
 
     @Override
     public boolean shouldEnable() {
-        return PurpurExtras.getPurpurConfig().getBoolean("settings.raid-totem-drops.enabled", false);
+        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.raid-totem-drops.enabled", false);
     }
 }

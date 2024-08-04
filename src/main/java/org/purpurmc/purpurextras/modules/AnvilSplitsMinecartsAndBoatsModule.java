@@ -10,7 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 /**
  * If enabled, dropping an anvil from significant height onto minecart with content
@@ -22,19 +22,19 @@ public class AnvilSplitsMinecartsAndBoatsModule implements PurpurExtrasModule, L
     private final boolean splitBoats, splitMinecarts;
 
     protected AnvilSplitsMinecartsAndBoatsModule() {
-        this.splitMinecarts = PurpurExtras.getPurpurConfig().getBoolean("settings.anvil-splits-minecarts", false);
-        this.splitBoats = PurpurExtras.getPurpurConfig().getBoolean("settings.anvil-splits-boats", false);
+        this.splitMinecarts = PurpurExtrasOG.getPurpurConfig().getBoolean("settings.anvil-splits-minecarts", false);
+        this.splitBoats = PurpurExtrasOG.getPurpurConfig().getBoolean("settings.anvil-splits-boats", false);
     }
     @Override
     public void enable() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public boolean shouldEnable() {
-        return PurpurExtras.getPurpurConfig().getBoolean("settings.anvil-splits-minecarts", false)
-                || PurpurExtras.getPurpurConfig().getBoolean("settings.anvil-splits-boats", false);
+        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.anvil-splits-minecarts", false)
+                || PurpurExtrasOG.getPurpurConfig().getBoolean("settings.anvil-splits-boats", false);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -76,6 +76,7 @@ public class AnvilSplitsMinecartsAndBoatsModule implements PurpurExtrasModule, L
                 location.getWorld().dropItemNaturally(location, new ItemStack(Material.HOPPER));
                 location.getWorld().dropItemNaturally(location, new ItemStack(Material.MINECART));
             }
+            default -> throw new IllegalArgumentException("Unexpected item in AnvilSplitsMinecartsAndBoatsModule: " + itemMaterial);
         }
     }
 }

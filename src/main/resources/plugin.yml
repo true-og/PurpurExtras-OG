@@ -1,8 +1,8 @@
 name: "${name}"
 version: ${version}
-main: "org.purpurmc.purpurextras.PurpurExtras"
-api-version: '1.21'
-authors: [ YouHaveTrouble ]
+main: "org.purpurmc.purpurextras.PurpurExtrasOG"
+api-version: '1.19'
+authors: [ YouHaveTrouble, NotAlexNoyle ]
 description: "${description}"
 commands:
   purpurextras:

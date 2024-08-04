@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class PurpurExtrasCommand implements TabExecutor {
+	
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
@@ -24,30 +25,31 @@ public class PurpurExtrasCommand implements TabExecutor {
         }
 
         if (strings.length == 1 && strings[0].equalsIgnoreCase("reload")) {
-            if (!commandSender.hasPermission("purpurextras.reload")) {
+            if (! commandSender.hasPermission("purpurextras.reload")) {
                 commandSender.sendMessage(Component.text("You don't have permission to do that.", NamedTextColor.RED));
                 return true;
             }
             commandSender.sendMessage(Component.text("Reloading PurpurExtras config..."));
-            PurpurExtras.getInstance().reloadPurpurExtrasConfig(commandSender);
+            PurpurExtrasOG.getInstance().reloadPurpurExtrasConfig(commandSender);
             return true;
         }
 
         if (strings.length == 1 && strings[0].equalsIgnoreCase("version")) {
-            commandSender.sendMessage(Component.text("PurpurExtras version "+PurpurExtras.getInstance().getDescription().getVersion()));
+            commandSender.sendMessage(Component.text("PurpurExtras version " + PurpurExtrasOG.getInstance().getPluginMeta().getVersion()));
         }
 
         return true;
     }
-
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
         List<String> cmds = List.of("reload", "version");
         if(args.length == 1) {
             return cmds.stream().filter(s -> s.toLowerCase().startsWith(args[0])).toList();
-        }else {
+        }
+        else {
             return Collections.emptyList();
         }
     }
+    
 }

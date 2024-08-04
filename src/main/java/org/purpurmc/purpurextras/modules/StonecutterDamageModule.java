@@ -1,6 +1,6 @@
 package org.purpurmc.purpurextras.modules;
 
-import org.purpurmc.purpurextras.PurpurExtras;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 import org.purpurmc.purpurextras.PurpurConfig;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
@@ -22,7 +22,7 @@ public class StonecutterDamageModule implements PurpurExtrasModule, Listener {
     private final HashSet<EntityType> stonecutterDamageBlacklist = new HashSet<>();
 
     protected StonecutterDamageModule() {
-        PurpurConfig config = PurpurExtras.getPurpurConfig();
+        PurpurConfig config = PurpurExtrasOG.getPurpurConfig();
         List<String> entityBlacklist = config.getList("settings.stonecutter-damage-filter.blacklist", List.of("player"));
         if (config.getBoolean("settings.stonecutter-damage-filter.enabled", false)) {
             if (entityBlacklist.isEmpty()) return;
@@ -41,17 +41,17 @@ public class StonecutterDamageModule implements PurpurExtrasModule, Listener {
         try {
             Class.forName("org.purpurmc.purpur.PurpurConfig");
         } catch (ClassNotFoundException e) {
-            PurpurExtras.getInstance().getLogger().warning(this.getClass().getSimpleName() + " module requires you to run Purpur as your server software.");
+            PurpurExtrasOG.getInstance().getLogger().warning(this.getClass().getSimpleName() + " module requires you to run Purpur as your server software.");
             return;
         }
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public boolean shouldEnable() {
         if (stonecutterDamageBlacklist.isEmpty()) return false;
-        return PurpurExtras.getPurpurConfig().getBoolean("settings.stonecutter-damage-filter.enabled", false);
+        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.stonecutter-damage-filter.enabled", false);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

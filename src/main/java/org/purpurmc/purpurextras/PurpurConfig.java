@@ -14,7 +14,7 @@ public class PurpurConfig {
     private final File configPath;
 
     protected PurpurConfig() {
-        PurpurExtras plugin = PurpurExtras.getInstance();
+        PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.reloadConfig();
         logger = plugin.getLogger();
         config = plugin.getConfig();
@@ -24,7 +24,7 @@ public class PurpurConfig {
     protected void saveConfig() {
         try {
             config.save(configPath);
-            config = PurpurExtras.getInstance().getConfig();
+            config = PurpurExtrasOG.getInstance().getConfig();
         } catch (IOException e) {
             logger.severe("Failed to save configuration file! - " + e.getLocalizedMessage());
         }

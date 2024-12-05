@@ -1,1 +1,1 @@
-rootProject.name = "PurpurExtras"
+rootProject.name = "PurpurExtras-OG"

@@ -16,6 +16,10 @@ repositories {
     }
 
     maven {
+        url = uri("https://jitpack.io")
+    }
+
+    maven {
         url = uri("https://repo.purpurmc.org/snapshots")
     }
 
@@ -25,10 +29,6 @@ repositories {
 
     maven {
         url = uri("https://libraries.minecraft.net")
-    }
-
-    maven {
-        url = uri("https://jitpack.io")
     }
 
     maven {

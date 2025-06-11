@@ -7,33 +7,16 @@ val pluginDir: File = serverDir.resolve("plugins")
 plugins {
     `java-library`
     id("io.github.goooler.shadow") version "8.1.8"
-	eclipse
+    eclipse
 }
 
 repositories {
-    maven {
-        url = uri("https://oss.sonatype.org/content/groups/public/")
-    }
-
-    maven {
-        url = uri("https://jitpack.io")
-    }
-
-    maven {
-        url = uri("https://repo.purpurmc.org/snapshots")
-    }
-
-    maven {
-        url = uri("https://papermc.io/repo/repository/maven-public/")
-    }
-
-    maven {
-        url = uri("https://libraries.minecraft.net")
-    }
-
-    maven {
-        url = uri("https://repo.maven.apache.org/maven2/")
-    }
+    maven { url = uri("https://oss.sonatype.org/content/groups/public/") }
+    maven { url = uri("https://jitpack.io") }
+    maven { url = uri("https://repo.purpurmc.org/snapshots") }
+    maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
+    maven { url = uri("https://libraries.minecraft.net") }
+    maven { url = uri("https://repo.maven.apache.org/maven2/") }
 }
 
 dependencies {
@@ -65,14 +48,13 @@ tasks {
     }
 
     processResources {
+        val tokens = mapOf(
+            "name" to project.name,
+            "version" to project.version.toString(),
+            "description" to project.description!!.replace("\"", "\\\"")
+        )
         filesMatching("plugin.yml") {
-            expand(
-                mapOf(
-                    "name" to project.name,
-                    "version" to project.version,
-                    "description" to project.description!!.replace('"'.toString(), "\\\"")
-                )
-            )
+            expand(tokens)
         }
     }
 
@@ -87,9 +69,10 @@ tasks {
         doFirst {
             serverDir.mkdirs()
             pluginDir.mkdirs()
-            URL("https://api.purpurmc.org/v2/purpur/1.21/latest/download").openStream().use {
-                Files.copy(it, serverDir.resolve("server.jar").toPath())
-            }
+            URL("https://api.purpurmc.org/v2/purpur/1.21/latest/download")
+                .openStream().use {
+                    Files.copy(it, serverDir.resolve("server.jar").toPath())
+                }
         }
     }
 
@@ -113,3 +96,4 @@ tasks {
         standardInput = System.`in`
     }
 }
+

@@ -1,10 +1,10 @@
 package org.purpurmc.purpurextras.modules;
 
-import org.purpurmc.purpurextras.PurpurExtrasOG;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 /**
  * If enabled, multiplier field will be used to modify fuel burn time in furnaces.
@@ -14,7 +14,8 @@ public class FurnaceBurnTimeModule implements PurpurExtrasModule, Listener {
     private final double furnaceBurnTimeMultiplier;
 
     protected FurnaceBurnTimeModule() {
-        furnaceBurnTimeMultiplier = PurpurExtrasOG.getPurpurConfig().getDouble("settings.furnace.burn-time.multiplier", 1.0);
+        furnaceBurnTimeMultiplier =
+                PurpurExtrasOG.getPurpurConfig().getDouble("settings.furnace.burn-time.multiplier", 1.0);
     }
 
     @Override

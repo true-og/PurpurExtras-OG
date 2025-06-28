@@ -3,6 +3,9 @@ package org.purpurmc.purpurextras.modules;
 import com.destroystokyo.paper.entity.ai.Goal;
 import com.destroystokyo.paper.entity.ai.GoalKey;
 import com.destroystokyo.paper.entity.ai.GoalType;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.function.Predicate;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
@@ -18,10 +21,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.purpurmc.purpurextras.PurpurExtrasOG;
-
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.function.Predicate;
 
 /**
  * Allows squids to act as Creepers - they will explode if within {@link #maxDistance} after a fuse of {@link #maxSwell}
@@ -39,7 +38,8 @@ public class CreeperSquidsModule implements PurpurExtrasModule, Listener {
     public void enable() {
         Bukkit.getServer().getPluginManager().registerEvents(this, PurpurExtrasOG.getInstance());
         maxSwell = PurpurExtrasOG.getPurpurConfig().getInt("settings.creeper-squid.fuse-ticks", 30);
-        maxDistance = (int) Math.pow(PurpurExtrasOG.getPurpurConfig().getInt("settings.creeper-squid.agro-distance", 7), 2);
+        maxDistance =
+                (int) Math.pow(PurpurExtrasOG.getPurpurConfig().getInt("settings.creeper-squid.agro-distance", 7), 2);
         explosionPower = PurpurExtrasOG.getPurpurConfig().getInt("settings.creeper-squid.explosion-radius", 3);
         velocity = PurpurExtrasOG.getPurpurConfig().getDouble("settings.creeper-squid.velocity", 0.5);
     }
@@ -57,12 +57,15 @@ public class CreeperSquidsModule implements PurpurExtrasModule, Listener {
         Bukkit.getMobGoals().addGoal(squid, 3, new SquidGoal(squid));
     }
 
-    //good chunk of this logic pulled directly from nms
+    // good chunk of this logic pulled directly from nms
     private final class SquidGoal implements Goal<Squid> {
 
         private static final GoalKey<Squid> goalKey = GoalKey.of(Squid.class, PurpurExtrasOG.key("squidgoal"));
-        private static final Predicate<Player> playerPredicate = player -> !player.hasPotionEffect(PotionEffectType.INVISIBILITY) &&
-                !player.isInvisible() && player.isValid() && (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE);
+        private static final Predicate<Player> playerPredicate =
+                player -> !player.hasPotionEffect(PotionEffectType.INVISIBILITY)
+                        && !player.isInvisible()
+                        && player.isValid()
+                        && (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE);
         private final Squid squid;
         private int currentSwell = 0;
         private int swellDir = -1;
@@ -75,13 +78,13 @@ public class CreeperSquidsModule implements PurpurExtrasModule, Listener {
         @Override
         public boolean shouldActivate() {
             if (!squid.isValid()) return false;
-            if(currentTarget != null) {
-                if(currentTarget.getLocation().distanceSquared(squid.getLocation()) <= maxDistance) {
+            if (currentTarget != null) {
+                if (currentTarget.getLocation().distanceSquared(squid.getLocation()) <= maxDistance) {
                     return true;
                 }
             }
             currentTarget = getClosestPlayer();
-            if(currentTarget == null) {
+            if (currentTarget == null) {
                 swellDir = -1;
                 if (currentSwell > 0) currentSwell += swellDir;
                 squid.setGlowing(false);
@@ -89,7 +92,6 @@ public class CreeperSquidsModule implements PurpurExtrasModule, Listener {
             }
             return true;
         }
-
 
         @Override
         public void stop() {
@@ -104,7 +106,11 @@ public class CreeperSquidsModule implements PurpurExtrasModule, Listener {
                 if (swellDir == -1)
                     squid.getWorld().playSound(squid.getLocation(), Sound.ENTITY_CREEPER_PRIMED, 1F, 0.5F);
                 swellDir = 1;
-                squid.setVelocity(squid.getLocation().toVector().subtract(currentTarget.getLocation().toVector()).normalize().multiply(-1 * velocity));
+                squid.setVelocity(squid.getLocation()
+                        .toVector()
+                        .subtract(currentTarget.getLocation().toVector())
+                        .normalize()
+                        .multiply(-1 * velocity));
                 squid.lookAt(currentTarget.getEyeLocation());
             }
             this.currentSwell += swellDir;
@@ -129,15 +135,20 @@ public class CreeperSquidsModule implements PurpurExtrasModule, Listener {
             if (!event.isCancelled()) {
                 squid.remove();
                 squid.getWorld().createExplosion(squid, squid.getLocation(), explosionPower);
-                Bukkit.getScheduler().runTaskLater(PurpurExtrasOG.getInstance(),
-                        () -> squid.getWorld().playSound(squid.getLocation(), Sound.ENTITY_CREEPER_DEATH, 1f, 0.5f), 1);
+                Bukkit.getScheduler()
+                        .runTaskLater(
+                                PurpurExtrasOG.getInstance(),
+                                () -> squid.getWorld()
+                                        .playSound(squid.getLocation(), Sound.ENTITY_CREEPER_DEATH, 1f, 0.5f),
+                                1);
             } else {
                 this.currentSwell = 0;
             }
         }
 
         private Player getClosestPlayer() {
-            Collection<Player> players = squid.getWorld().getNearbyEntitiesByType(Player.class, squid.getLocation(), maxDistance, playerPredicate);
+            Collection<Player> players = squid.getWorld()
+                    .getNearbyEntitiesByType(Player.class, squid.getLocation(), maxDistance, playerPredicate);
             double playerDistance = -1;
             Player closestPlayer = null;
             for (Player player : players) {

@@ -1,6 +1,6 @@
 package org.purpurmc.purpurextras.modules;
 
-import org.purpurmc.purpurextras.PurpurExtrasOG;
+import java.util.Map;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,8 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.purpurmc.purpur.event.inventory.GrindstoneTakeResultEvent;
-
-import java.util.Map;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 /**
  * If enabled and player has books in their inventory while disenchanting item in a grindstone,
@@ -36,7 +35,10 @@ public class GrindstoneEnchantsBooksModule implements PurpurExtrasModule, Listen
         try {
             Class.forName("org.purpurmc.purpur.event.inventory.GrindstoneTakeResultEvent");
         } catch (ClassNotFoundException e) {
-            PurpurExtrasOG.getInstance().getLogger().warning(this.getClass().getSimpleName() + " module requires you to run Purpur as your server software.");
+            PurpurExtrasOG.getInstance()
+                    .getLogger()
+                    .warning(this.getClass().getSimpleName()
+                            + " module requires you to run Purpur as your server software.");
             return;
         }
         PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();

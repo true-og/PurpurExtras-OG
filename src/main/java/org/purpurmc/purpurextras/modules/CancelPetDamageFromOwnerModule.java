@@ -24,27 +24,28 @@ public class CancelPetDamageFromOwnerModule implements PurpurExtrasModule, Liste
 
     @Override
     public boolean shouldEnable() {
-        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.gameplay-settings.cancel-damage-from-pet-owner", false);
+        return PurpurExtrasOG.getPurpurConfig()
+                .getBoolean("settings.gameplay-settings.cancel-damage-from-pet-owner", false);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPetDamage(EntityDamageByEntityEvent damageEvent){
+    public void onPetDamage(EntityDamageByEntityEvent damageEvent) {
         Entity damager = damageEvent.getDamager();
-        if(!(damageEvent.getEntity() instanceof Tameable pet)) return;
-        if(!pet.isTamed()) return;
+        if (!(damageEvent.getEntity() instanceof Tameable pet)) return;
+        if (!pet.isTamed()) return;
         if (!(pet.getOwner() instanceof OfflinePlayer owner)) return;
-        if(damager instanceof Projectile projectile) {
+        if (damager instanceof Projectile projectile) {
             ProjectileSource shooter = projectile.getShooter();
             if (!(shooter instanceof OfflinePlayer playerShooter)) return;
             if (playerShooter != owner) return;
             damageEvent.setCancelled(true);
-            if ((projectile instanceof AbstractArrow && !projectile.getType().equals(EntityType.TRIDENT))){
+            if ((projectile instanceof AbstractArrow && !projectile.getType().equals(EntityType.TRIDENT))) {
                 projectile.remove();
             }
             return;
         }
-        if(!(damager instanceof OfflinePlayer damagingPlayer)) return;
-        if(damagingPlayer.getUniqueId() != owner.getUniqueId()) return;
+        if (!(damager instanceof OfflinePlayer damagingPlayer)) return;
+        if (damagingPlayer.getUniqueId() != owner.getUniqueId()) return;
         damageEvent.setCancelled(true);
     }
 }

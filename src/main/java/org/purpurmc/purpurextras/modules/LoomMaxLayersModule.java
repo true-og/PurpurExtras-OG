@@ -1,21 +1,20 @@
 package org.purpurmc.purpurextras.modules;
 
 import com.destroystokyo.paper.MaterialSetTag;
+import java.util.HashMap;
+import java.util.List;
 import org.bukkit.block.banner.Pattern;
-import org.bukkit.event.inventory.InventoryAction;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.LoomInventory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.LoomInventory;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.purpurmc.purpurextras.PurpurExtrasOG;
-
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * If enabled, banners will be able to use more than the limit of 6 layers.
@@ -65,7 +64,8 @@ public class LoomMaxLayersModule implements PurpurExtrasModule, Listener {
                     }
                 }
                 case RESULT -> setNewPatternsToBanner(player, currentItem);
-			default -> throw new IllegalArgumentException("Unexpected value in LoomMaxLayersModule: " + event.getSlotType());
+                default -> throw new IllegalArgumentException(
+                        "Unexpected value in LoomMaxLayersModule: " + event.getSlotType());
             }
         } else if (cursorItem != null && MaterialSetTag.BANNERS.isTagged(cursorItem.getType())) {
             if (doesNewLayerExceedMaxLayers(cursorItem)) return;
@@ -76,9 +76,9 @@ public class LoomMaxLayersModule implements PurpurExtrasModule, Listener {
     }
 
     private boolean isPlaceAction(InventoryAction action) {
-        return action == InventoryAction.PLACE_SOME ||
-                action == InventoryAction.PLACE_ALL ||
-                action == InventoryAction.PLACE_ONE;
+        return action == InventoryAction.PLACE_SOME
+                || action == InventoryAction.PLACE_ALL
+                || action == InventoryAction.PLACE_ONE;
     }
 
     private void saveBannerLayers(Player player, ItemStack banner) {

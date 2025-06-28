@@ -1,7 +1,6 @@
 package org.purpurmc.purpurextras.modules;
 
-import org.purpurmc.purpurextras.PurpurExtrasOG;
-import org.purpurmc.purpurextras.PurpurConfig;
+import java.util.List;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
@@ -14,8 +13,8 @@ import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.event.inventory.InventoryCreativeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.List;
+import org.purpurmc.purpurextras.PurpurConfig;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 /**
  * If true, will add lore with amount of bees and honey to the picked up hives.
@@ -27,8 +26,10 @@ public class BeeHiveLoreModule implements PurpurExtrasModule, Listener {
 
     protected BeeHiveLoreModule() {
         PurpurConfig config = PurpurExtrasOG.getPurpurConfig();
-        this.beeHiveLoreBees = config.getString("settings.items.beehive-lore.bees", "<reset><gray>Bees: <bees>/<maxbees>");
-        this.beeHiveLoreHoney = config.getString("settings.items.beehive-lore.honey", "<reset><gray>Honey level: <honey>/<maxhoney>");
+        this.beeHiveLoreBees =
+                config.getString("settings.items.beehive-lore.bees", "<reset><gray>Bees: <bees>/<maxbees>");
+        this.beeHiveLoreHoney =
+                config.getString("settings.items.beehive-lore.honey", "<reset><gray>Honey level: <honey>/<maxhoney>");
     }
 
     @Override
@@ -47,7 +48,8 @@ public class BeeHiveLoreModule implements PurpurExtrasModule, Listener {
 
         BlockState blockState = event.getBlockState();
 
-        if (!blockState.getType().equals(Material.BEE_NEST) && !blockState.getType().equals(Material.BEEHIVE)) return;
+        if (!blockState.getType().equals(Material.BEE_NEST)
+                && !blockState.getType().equals(Material.BEEHIVE)) return;
 
         org.bukkit.block.Beehive beehive = (org.bukkit.block.Beehive) blockState;
         org.bukkit.block.data.type.Beehive beehiveData = (org.bukkit.block.data.type.Beehive) blockState.getBlockData();
@@ -59,7 +61,8 @@ public class BeeHiveLoreModule implements PurpurExtrasModule, Listener {
             if (item.getType().equals(Material.BEE_NEST) || item.getType().equals(Material.BEEHIVE)) {
                 ItemMeta meta = item.getItemMeta();
                 Component beeCountComponent = getBeesComponent(beehive.getEntityCount(), beehive.getMaxEntities());
-                Component honeyLevelComponent = getHoneyComponent(beehiveData.getHoneyLevel(), beehiveData.getMaximumHoneyLevel());
+                Component honeyLevelComponent =
+                        getHoneyComponent(beehiveData.getHoneyLevel(), beehiveData.getMaximumHoneyLevel());
                 List<Component> lore = List.of(beeCountComponent, honeyLevelComponent);
                 meta.lore(lore);
                 item.setItemMeta(meta);
@@ -71,11 +74,10 @@ public class BeeHiveLoreModule implements PurpurExtrasModule, Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBeehiveCreativePick(InventoryCreativeEvent event) {
         if (!event.getCursor().getType().equals(Material.BEE_NEST)
-                && !event.getCursor().getType().equals(Material.BEEHIVE))
-            return;
+                && !event.getCursor().getType().equals(Material.BEEHIVE)) return;
         ItemStack item = event.getCursor();
         ItemMeta meta = item.getItemMeta();
-        //TODO find a way to read bee data from ItemStack
+        // TODO find a way to read bee data from ItemStack
         Component beeCountComponent = getBeesComponent(0, 3);
         Component honeyLevelComponent = getHoneyComponent(0, 5);
         List<Component> lore = List.of(beeCountComponent, honeyLevelComponent);
@@ -96,5 +98,4 @@ public class BeeHiveLoreModule implements PurpurExtrasModule, Listener {
         beeHiveLoreHoneyString = beeHiveLoreHoneyString.replaceAll("<maxhoney>", String.valueOf(maxHoney));
         return miniMessage.deserializeOrNull(beeHiveLoreHoneyString);
     }
-    
 }

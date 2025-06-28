@@ -1,6 +1,9 @@
 package org.purpurmc.purpurextras.modules;
 
-import org.purpurmc.purpurextras.PurpurExtrasOG;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.UUID;
 import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,11 +17,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.UUID;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 /**
  * If enabled, totem of undying will save players from death in the void and will
@@ -31,9 +30,9 @@ public class VoidTotemModule implements PurpurExtrasModule, Listener {
     private final HashMap<UUID, Location> lastGroundedLocations = new HashMap<>();
 
     protected VoidTotemModule() {
-        totemEffects.add(new PotionEffect(PotionEffectType.REGENERATION, 20*45, 1));
-        totemEffects.add(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 20*40, 0));
-        totemEffects.add(new PotionEffect(PotionEffectType.ABSORPTION, 20*5, 1));
+        totemEffects.add(new PotionEffect(PotionEffectType.REGENERATION, 20 * 45, 1));
+        totemEffects.add(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 20 * 40, 0));
+        totemEffects.add(new PotionEffect(PotionEffectType.ABSORPTION, 20 * 5, 1));
     }
 
     @Override
@@ -70,12 +69,12 @@ public class VoidTotemModule implements PurpurExtrasModule, Listener {
         if (player.getHealth() - event.getFinalDamage() > 0) return;
 
         if (!player.getInventory().getItemInMainHand().getType().equals(Material.TOTEM_OF_UNDYING)
-                && !player.getInventory().getItemInOffHand().getType().equals(Material.TOTEM_OF_UNDYING)
-        ) return;
+                && !player.getInventory().getItemInOffHand().getType().equals(Material.TOTEM_OF_UNDYING)) return;
 
         event.setCancelled(true);
 
-        Location safeLocation = lastGroundedLocations.getOrDefault(player.getUniqueId(), location.getWorld().getSpawnLocation());
+        Location safeLocation = lastGroundedLocations.getOrDefault(
+                player.getUniqueId(), location.getWorld().getSpawnLocation());
         player.teleportAsync(safeLocation).thenRun(() -> useTotem(player));
     }
 

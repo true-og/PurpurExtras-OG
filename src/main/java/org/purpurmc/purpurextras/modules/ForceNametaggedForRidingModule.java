@@ -1,5 +1,6 @@
 package org.purpurmc.purpurextras.modules;
 
+import io.papermc.paper.event.entity.EntityMoveEvent;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -11,14 +12,13 @@ import org.bukkit.event.Listener;
 import org.purpurmc.purpurextras.PurpurExtrasOG;
 import org.spigotmc.event.entity.EntityMountEvent;
 
-import io.papermc.paper.event.entity.EntityMoveEvent;
-
 /**
  * If enabled, only nametagged mobs can be mounted/steered using purpur's rideable option.
  */
 public class ForceNametaggedForRidingModule implements PurpurExtrasModule, Listener {
 
     protected ForceNametaggedForRidingModule() {}
+
     @Override
     public void enable() {
         PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
@@ -27,7 +27,8 @@ public class ForceNametaggedForRidingModule implements PurpurExtrasModule, Liste
 
     @Override
     public boolean shouldEnable() {
-        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.rideables.mob-needs-to-be-nametagged-to-ride", false);
+        return PurpurExtrasOG.getPurpurConfig()
+                .getBoolean("settings.rideables.mob-needs-to-be-nametagged-to-ride", false);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -56,7 +57,9 @@ public class ForceNametaggedForRidingModule implements PurpurExtrasModule, Liste
         if (vehicle.getPassengers().isEmpty()) return;
         Entity passenger = vehicle.getPassengers().get(0);
         if (!(passenger instanceof Player player)) return;
-        if (vehicle.customName() != null && player.hasPermission("allow.ride."+vehicle.getType().getKey().getKey())) return;
+        if (vehicle.customName() != null
+                && player.hasPermission(
+                        "allow.ride." + vehicle.getType().getKey().getKey())) return;
         event.setCancelled(true);
     }
 }

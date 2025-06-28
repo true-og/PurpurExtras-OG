@@ -1,5 +1,10 @@
 package org.purpurmc.purpurextras.modules;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.logging.Logger;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -11,12 +16,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.purpurmc.purpurextras.PurpurConfig;
 import org.purpurmc.purpurextras.PurpurExtrasOG;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.logging.Logger;
 
 /**
  * If speed-multiplier value is higher than 0, player will gain speed potion effect of the level of that value.
@@ -40,9 +39,11 @@ public class RunFasterOnPathsModule implements PurpurExtrasModule, Listener {
         speedMultiplier = Math.max(0, rawSpeedMultiplier);
         int duration = config.getInt("settings.gameplay-settings.run-faster-on-paths.duration", 2);
 
-        speedEffect = new PotionEffect(PotionEffectType.SPEED, duration, Math.max(speedMultiplier - 1, 0), false, false, false);
+        speedEffect = new PotionEffect(
+                PotionEffectType.SPEED, duration, Math.max(speedMultiplier - 1, 0), false, false, false);
 
-        List<String> rawPathBlocks = config.getList("settings.gameplay-settings.run-faster-on-paths.path-blocks", defaults);
+        List<String> rawPathBlocks =
+                config.getList("settings.gameplay-settings.run-faster-on-paths.path-blocks", defaults);
         rawPathBlocks.forEach((string) -> {
             Material material = Material.getMaterial(string.toUpperCase(Locale.ENGLISH));
             if (material == null) {
@@ -77,5 +78,4 @@ public class RunFasterOnPathsModule implements PurpurExtrasModule, Listener {
 
         player.addPotionEffect(speedEffect);
     }
-
 }

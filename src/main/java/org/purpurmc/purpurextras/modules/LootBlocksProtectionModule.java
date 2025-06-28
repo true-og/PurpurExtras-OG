@@ -1,5 +1,7 @@
 package org.purpurmc.purpurextras.modules;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.DecoratedPot;
 import org.bukkit.event.EventHandler;
@@ -14,9 +16,6 @@ import org.bukkit.util.permissions.DefaultPermissions;
 import org.purpurmc.purpurextras.PurpurConfig;
 import org.purpurmc.purpurextras.PurpurExtrasOG;
 import org.purpurmc.purpurextras.util.MessageType;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 
 /**
  * Prevents players from breaking blocks with loot tables that can regenerate loot.
@@ -36,19 +35,17 @@ public class LootBlocksProtectionModule implements PurpurExtrasModule, Listener 
         DefaultPermissions.registerPermission(
                 permission,
                 "Players with this permission will be able to break blocks with loot tables that can regenerate loot",
-                PermissionDefault.OP
-        );
+                PermissionDefault.OP);
 
-        String defaultMessage = "<red>Prevented you from breaking this block because it can regenerate loot. Sneak to break it anyway.";
-        message = MiniMessage.miniMessage().deserialize(
-                config.getString("settings.protect-blocks-with-loot.message", defaultMessage)
-        );
+        String defaultMessage =
+                "<red>Prevented you from breaking this block because it can regenerate loot. Sneak to break it anyway.";
+        message = MiniMessage.miniMessage()
+                .deserialize(config.getString("settings.protect-blocks-with-loot.message", defaultMessage));
         allowBreakingInSneak = config.getBoolean("settings.protect-blocks-with-loot.allow-breaking-in-sneak", true);
         blocksImmuneToExplosions = config.getBoolean("settings.protect-blocks-with-loot.immune-to-explosions", false);
         try {
-            messageType = MessageType.valueOf(
-                    config.getString("settings.protect-blocks-with-loot.message-type", "CHAT").toUpperCase()
-            );
+            messageType = MessageType.valueOf(config.getString("settings.protect-blocks-with-loot.message-type", "CHAT")
+                    .toUpperCase());
         } catch (IllegalArgumentException e) {
             messageType = MessageType.CHAT;
         }
@@ -102,5 +99,4 @@ public class LootBlocksProtectionModule implements PurpurExtrasModule, Listener 
         }
         return false;
     }
-
 }

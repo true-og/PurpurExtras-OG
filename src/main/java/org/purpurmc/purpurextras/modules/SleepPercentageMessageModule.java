@@ -1,6 +1,7 @@
 package org.purpurmc.purpurextras.modules;
 
 import io.papermc.paper.event.player.PlayerDeepSleepEvent;
+import java.util.List;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.GameRule;
@@ -15,8 +16,6 @@ import org.bukkit.util.permissions.DefaultPermissions;
 import org.purpurmc.purpurextras.PurpurConfig;
 import org.purpurmc.purpurextras.PurpurExtrasOG;
 
-import java.util.List;
-
 /**
  * If enabled, sends messages in chat containing amount of players required to sleep based on playersSleepingPercentage gamerule.
  */
@@ -27,8 +26,12 @@ public class SleepPercentageMessageModule implements PurpurExtrasModule, Listene
 
     protected SleepPercentageMessageModule() {
         PurpurConfig config = PurpurExtrasOG.getPurpurConfig();
-        this.playerSleepMessage = config.getString("settings.chat.send-sleep-percentage-message.player-sleeping", "<grey><playername> has fallen asleep. <sleeping> out of <needed> required players in <worldname> are sleeping.");
-        this.nightSkipMessage = config.getString("settings.chat.send-sleep-percentage-message.skipping-night", "<grey>Enough players have slept! Skipping through the night in <worldname>.");
+        this.playerSleepMessage = config.getString(
+                "settings.chat.send-sleep-percentage-message.player-sleeping",
+                "<grey><playername> has fallen asleep. <sleeping> out of <needed> required players in <worldname> are sleeping.");
+        this.nightSkipMessage = config.getString(
+                "settings.chat.send-sleep-percentage-message.skipping-night",
+                "<grey>Enough players have slept! Skipping through the night in <worldname>.");
     }
 
     @Override
@@ -39,10 +42,14 @@ public class SleepPercentageMessageModule implements PurpurExtrasModule, Listene
 
     @Override
     public boolean shouldEnable() {
-        DefaultPermissions.registerPermission(sleepMessageBypass, "Allows player to not display a message in chat when they sleep", PermissionDefault.OP);
-        if ((playerSleepMessage == null || playerSleepMessage.isBlank()) && (nightSkipMessage == null || nightSkipMessage.isBlank()))
-            return false;
-        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.chat.send-sleep-percentage-message.enabled", false);
+        DefaultPermissions.registerPermission(
+                sleepMessageBypass,
+                "Allows player to not display a message in chat when they sleep",
+                PermissionDefault.OP);
+        if ((playerSleepMessage == null || playerSleepMessage.isBlank())
+                && (nightSkipMessage == null || nightSkipMessage.isBlank())) return false;
+        return PurpurExtrasOG.getPurpurConfig()
+                .getBoolean("settings.chat.send-sleep-percentage-message.enabled", false);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -60,7 +67,8 @@ public class SleepPercentageMessageModule implements PurpurExtrasModule, Listene
         for (Player player : playerList) {
             if (player.isDeeplySleeping()) currentSleepCount += 1;
         }
-        world.sendMessage(miniMsg.deserialize(playerSleepMessage,
+        world.sendMessage(miniMsg.deserialize(
+                playerSleepMessage,
                 Placeholder.unparsed("playername", playerName),
                 Placeholder.unparsed("sleeping", String.valueOf(currentSleepCount)),
                 Placeholder.unparsed("needed", String.valueOf(neededSleepers)),
@@ -72,6 +80,7 @@ public class SleepPercentageMessageModule implements PurpurExtrasModule, Listene
         if (!event.getSkipReason().equals(TimeSkipEvent.SkipReason.NIGHT_SKIP)) return;
         if (nightSkipMessage == null || nightSkipMessage.isBlank()) return;
         String worldName = event.getWorld().getName();
-        event.getWorld().sendMessage(miniMsg.deserialize(nightSkipMessage, Placeholder.unparsed("worldname", worldName)));
+        event.getWorld()
+                .sendMessage(miniMsg.deserialize(nightSkipMessage, Placeholder.unparsed("worldname", worldName)));
     }
 }

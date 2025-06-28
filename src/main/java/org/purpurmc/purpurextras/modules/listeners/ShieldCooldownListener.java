@@ -18,5 +18,4 @@ public class ShieldCooldownListener implements Listener {
         if (!event.getType().equals(Material.SHIELD)) return;
         event.setCooldown(shieldCooldown);
     }
-
 }

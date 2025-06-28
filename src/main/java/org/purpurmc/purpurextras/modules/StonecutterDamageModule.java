@@ -1,16 +1,15 @@
 package org.purpurmc.purpurextras.modules;
 
-import org.purpurmc.purpurextras.PurpurExtrasOG;
-import org.purpurmc.purpurextras.PurpurConfig;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
+import org.purpurmc.purpurextras.PurpurConfig;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 /**
  * If enabled, allows filtering which entity types don't get damaged by stonecutters if
@@ -23,7 +22,8 @@ public class StonecutterDamageModule implements PurpurExtrasModule, Listener {
 
     protected StonecutterDamageModule() {
         PurpurConfig config = PurpurExtrasOG.getPurpurConfig();
-        List<String> entityBlacklist = config.getList("settings.stonecutter-damage-filter.blacklist", List.of("player"));
+        List<String> entityBlacklist =
+                config.getList("settings.stonecutter-damage-filter.blacklist", List.of("player"));
         if (config.getBoolean("settings.stonecutter-damage-filter.enabled", false)) {
             if (entityBlacklist.isEmpty()) return;
             for (EntityType entityType : EntityType.values()) {
@@ -41,7 +41,10 @@ public class StonecutterDamageModule implements PurpurExtrasModule, Listener {
         try {
             Class.forName("org.purpurmc.purpur.PurpurConfig");
         } catch (ClassNotFoundException e) {
-            PurpurExtrasOG.getInstance().getLogger().warning(this.getClass().getSimpleName() + " module requires you to run Purpur as your server software.");
+            PurpurExtrasOG.getInstance()
+                    .getLogger()
+                    .warning(this.getClass().getSimpleName()
+                            + " module requires you to run Purpur as your server software.");
             return;
         }
         PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
@@ -60,8 +63,6 @@ public class StonecutterDamageModule implements PurpurExtrasModule, Listener {
         if (!event.getCause().equals(EntityDamageEvent.DamageCause.CONTACT)) return;
         if (!event.getEntity().isOnGround()) return;
 
-        if (stonecutterDamageBlacklist.contains(event.getEntity().getType()))
-            event.setCancelled(true);
-
+        if (stonecutterDamageBlacklist.contains(event.getEntity().getType())) event.setCancelled(true);
     }
 }

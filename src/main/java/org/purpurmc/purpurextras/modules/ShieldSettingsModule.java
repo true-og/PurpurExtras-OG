@@ -27,7 +27,9 @@ public class ShieldSettingsModule implements PurpurExtrasModule, Listener {
     public void enable() {
         PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         if (shieldDamageReduction != DEFAULT_SHIELD_DAMAGE_REDUCTION) {
-            plugin.getServer().getPluginManager().registerEvents(new ShieldDamageReductionListener(shieldDamageReduction), plugin);
+            plugin.getServer()
+                    .getPluginManager()
+                    .registerEvents(new ShieldDamageReductionListener(shieldDamageReduction), plugin);
         }
         if (shieldCooldown != DEFAULT_SHIELD_COOLDOWN) {
             plugin.getServer().getPluginManager().registerEvents(new ShieldCooldownListener(shieldCooldown), plugin);
@@ -36,7 +38,8 @@ public class ShieldSettingsModule implements PurpurExtrasModule, Listener {
 
     @Override
     public boolean shouldEnable() {
-        shieldDamageReduction = PurpurExtrasOG.getPurpurConfig().getDouble("settings.shield.damage-reduction", shieldDamageReduction);
+        shieldDamageReduction =
+                PurpurExtrasOG.getPurpurConfig().getDouble("settings.shield.damage-reduction", shieldDamageReduction);
         shieldDamageReduction = Math.min(1.0, Math.max(0, shieldDamageReduction));
 
         shieldCooldown = PurpurExtrasOG.getPurpurConfig().getInt("settings.shield.cooldown", shieldCooldown);
@@ -44,5 +47,4 @@ public class ShieldSettingsModule implements PurpurExtrasModule, Listener {
 
         return shieldDamageReduction != DEFAULT_SHIELD_DAMAGE_REDUCTION || shieldCooldown != DEFAULT_SHIELD_COOLDOWN;
     }
-
 }

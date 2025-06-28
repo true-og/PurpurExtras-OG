@@ -25,6 +25,7 @@ public class AnvilSplitsMinecartsAndBoatsModule implements PurpurExtrasModule, L
         this.splitMinecarts = PurpurExtrasOG.getPurpurConfig().getBoolean("settings.anvil-splits-minecarts", false);
         this.splitBoats = PurpurExtrasOG.getPurpurConfig().getBoolean("settings.anvil-splits-boats", false);
     }
+
     @Override
     public void enable() {
         PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
@@ -76,7 +77,8 @@ public class AnvilSplitsMinecartsAndBoatsModule implements PurpurExtrasModule, L
                 location.getWorld().dropItemNaturally(location, new ItemStack(Material.HOPPER));
                 location.getWorld().dropItemNaturally(location, new ItemStack(Material.MINECART));
             }
-            default -> throw new IllegalArgumentException("Unexpected item in AnvilSplitsMinecartsAndBoatsModule: " + itemMaterial);
+            default -> throw new IllegalArgumentException(
+                    "Unexpected item in AnvilSplitsMinecartsAndBoatsModule: " + itemMaterial);
         }
     }
 }

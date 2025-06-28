@@ -1,11 +1,10 @@
 package org.purpurmc.purpurextras.modules;
 
-import org.purpurmc.purpurextras.PurpurExtrasOG;
+import java.util.*;
 import org.bukkit.event.HandlerList;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
-
-import java.util.*;
 
 public interface PurpurExtrasModule {
 
@@ -25,11 +24,13 @@ public interface PurpurExtrasModule {
 
         HandlerList.unregisterAll(PurpurExtrasOG.getInstance());
 
-        Set<Class<?>> subTypes = reflections.get(Scanners.SubTypes.of(PurpurExtrasModule.class).asClass());
+        Set<Class<?>> subTypes =
+                reflections.get(Scanners.SubTypes.of(PurpurExtrasModule.class).asClass());
 
         subTypes.forEach(clazz -> {
             try {
-                PurpurExtrasModule module = (PurpurExtrasModule) clazz.getDeclaredConstructor().newInstance();
+                PurpurExtrasModule module =
+                        (PurpurExtrasModule) clazz.getDeclaredConstructor().newInstance();
                 if (module.shouldEnable()) {
                     module.enable();
                 }
@@ -37,7 +38,5 @@ public interface PurpurExtrasModule {
                 PurpurExtrasOG.getInstance().getSLF4JLogger().warn("Failed to load module " + clazz.getSimpleName());
             }
         });
-
     }
-
 }

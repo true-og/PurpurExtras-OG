@@ -3,6 +3,7 @@ package org.purpurmc.purpurextras.modules;
 import com.destroystokyo.paper.MaterialSetTag;
 import com.destroystokyo.paper.MaterialTags;
 import io.papermc.paper.event.block.BlockPreDispenseEvent;
+import java.util.Map;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Jukebox;
@@ -19,8 +20,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.purpurmc.purpurextras.PurpurConfig;
 import org.purpurmc.purpurextras.PurpurExtrasOG;
 import org.purpurmc.purpurextras.util.ItemStackUtil;
-
-import java.util.Map;
 
 /**
  * Dispenser modifications
@@ -41,7 +40,8 @@ import java.util.Map;
  */
 public class DispenserBlocksModule implements PurpurExtrasModule, Listener {
 
-    private static final MaterialSetTag CAULDRON_BUCKETS = new MaterialSetTag(new NamespacedKey(PurpurExtrasOG.getInstance(), "cauldron_buckets"))
+    private static final MaterialSetTag CAULDRON_BUCKETS = new MaterialSetTag(
+                    new NamespacedKey(PurpurExtrasOG.getInstance(), "cauldron_buckets"))
             .add(Material.BUCKET)
             .add(Material.WATER_BUCKET)
             .add(Material.LAVA_BUCKET)
@@ -57,8 +57,14 @@ public class DispenserBlocksModule implements PurpurExtrasModule, Listener {
     });
     BlockData lavaCauldron = Bukkit.createBlockData(Material.LAVA_CAULDRON);
 
-    private final boolean breakBlockPickaxe, breakBlockShovel, breakBlockHoe, breakBlockAxe, breakBlockShears,
-            shearPumpkin, activateJukebox, interactWithCauldron;
+    private final boolean breakBlockPickaxe,
+            breakBlockShovel,
+            breakBlockHoe,
+            breakBlockAxe,
+            breakBlockShears,
+            shearPumpkin,
+            activateJukebox,
+            interactWithCauldron;
 
     protected DispenserBlocksModule() {
         PurpurConfig config = PurpurExtrasOG.getPurpurConfig();
@@ -70,7 +76,6 @@ public class DispenserBlocksModule implements PurpurExtrasModule, Listener {
         shearPumpkin = config.getBoolean("settings.dispenser.shears-shear-pumpkin", false);
         activateJukebox = config.getBoolean("settings.dispenser.puts-discs-in-jukebox", false);
         interactWithCauldron = config.getBoolean("settings.dispenser.interact-with-cauldron", false);
-
     }
 
     @Override
@@ -89,8 +94,7 @@ public class DispenserBlocksModule implements PurpurExtrasModule, Listener {
                 breakBlockShears,
                 shearPumpkin,
                 activateJukebox,
-                interactWithCauldron
-        );
+                interactWithCauldron);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -98,7 +102,8 @@ public class DispenserBlocksModule implements PurpurExtrasModule, Listener {
         if (!event.getBlock().getType().equals(Material.DISPENSER)) return;
         Dispenser dispenser = (Dispenser) event.getBlock().getBlockData();
         Block block = event.getBlock().getRelative(dispenser.getFacing());
-        org.bukkit.block.Dispenser blockDispenser = (org.bukkit.block.Dispenser) event.getBlock().getState(false);
+        org.bukkit.block.Dispenser blockDispenser =
+                (org.bukkit.block.Dispenser) event.getBlock().getState(false);
         ItemStack item = event.getItemStack();
 
         if (breakBlockPickaxe && MaterialTags.PICKAXES.isTagged(item)) {
@@ -121,8 +126,7 @@ public class DispenserBlocksModule implements PurpurExtrasModule, Listener {
         // Shear pumpkin
         if (shearPumpkin
                 && item.getType().equals(Material.SHEARS)
-                && block.getType().equals(Material.PUMPKIN)
-        ) {
+                && block.getType().equals(Material.PUMPKIN)) {
             Inventory inventory = blockDispenser.getInventory();
             damageItem(item, inventory);
             event.setCancelled(true);
@@ -133,8 +137,7 @@ public class DispenserBlocksModule implements PurpurExtrasModule, Listener {
         // Swap records in jukebox
         if (activateJukebox
                 && MaterialTags.MUSIC_DISCS.isTagged(item)
-                && block.getType().equals(Material.JUKEBOX)
-        ) {
+                && block.getType().equals(Material.JUKEBOX)) {
             event.setCancelled(true);
             Jukebox jukebox = (Jukebox) block.getState(false);
             jukebox.eject();
@@ -144,32 +147,42 @@ public class DispenserBlocksModule implements PurpurExtrasModule, Listener {
             return;
         }
 
-        //Dispense liquid in and from cauldrons
-        if (interactWithCauldron && Tag.CAULDRONS.isTagged(block.getType()) && CAULDRON_BUCKETS.isTagged(item)){
+        // Dispense liquid in and from cauldrons
+        if (interactWithCauldron && Tag.CAULDRONS.isTagged(block.getType()) && CAULDRON_BUCKETS.isTagged(item)) {
             Material dispensedItemType = item.getType();
             Levelled cauldronLevel;
-            if(block.getType().equals(Material.CAULDRON)){
-                switch(dispensedItemType){
-                    case BUCKET -> { return; }
+            if (block.getType().equals(Material.CAULDRON)) {
+                switch (dispensedItemType) {
+                    case BUCKET -> {
+                        return;
+                    }
                     case LAVA_BUCKET -> {
-                        emptyCauldronHandler(block, lavaCauldron, item, blockDispenser.getLocation(), Sound.ITEM_BUCKET_EMPTY_LAVA);
+                        emptyCauldronHandler(
+                                block, lavaCauldron, item, blockDispenser.getLocation(), Sound.ITEM_BUCKET_EMPTY_LAVA);
                         event.setCancelled(true);
                         return;
                     }
                     case WATER_BUCKET -> {
-                        emptyCauldronHandler(block, waterCauldron, item, blockDispenser.getLocation(), Sound.ITEM_BUCKET_EMPTY);
+                        emptyCauldronHandler(
+                                block, waterCauldron, item, blockDispenser.getLocation(), Sound.ITEM_BUCKET_EMPTY);
                         event.setCancelled(true);
                         return;
                     }
                     case POWDER_SNOW_BUCKET -> {
-                        emptyCauldronHandler(block, powderSnowCauldron, item, blockDispenser.getLocation(), Sound.ITEM_BUCKET_EMPTY_POWDER_SNOW);
+                        emptyCauldronHandler(
+                                block,
+                                powderSnowCauldron,
+                                item,
+                                blockDispenser.getLocation(),
+                                Sound.ITEM_BUCKET_EMPTY_POWDER_SNOW);
                         event.setCancelled(true);
                         return;
                     }
-                    default -> throw new IllegalArgumentException("Unexpected value in DispenserBlockModule: " + dispensedItemType);
+                    default -> throw new IllegalArgumentException(
+                            "Unexpected value in DispenserBlockModule: " + dispensedItemType);
                 }
             }
-            if(!dispensedItemType.equals(Material.BUCKET)) return;
+            if (!dispensedItemType.equals(Material.BUCKET)) return;
             switch (block.getType()) {
                 case LAVA_CAULDRON -> {
                     fullCauldronHandler(block, item, blockDispenser, Material.LAVA_BUCKET, Sound.ITEM_BUCKET_FILL_LAVA);
@@ -184,10 +197,16 @@ public class DispenserBlocksModule implements PurpurExtrasModule, Listener {
                 case POWDER_SNOW_CAULDRON -> {
                     cauldronLevel = (Levelled) block.getBlockData();
                     if (cauldronLevel.getLevel() < 3) return;
-                    fullCauldronHandler(block, item, blockDispenser, Material.POWDER_SNOW_BUCKET, Sound.ITEM_BUCKET_FILL_POWDER_SNOW);
+                    fullCauldronHandler(
+                            block,
+                            item,
+                            blockDispenser,
+                            Material.POWDER_SNOW_BUCKET,
+                            Sound.ITEM_BUCKET_FILL_POWDER_SNOW);
                     event.setCancelled(true);
                 }
-				default -> throw new IllegalArgumentException("Unexpected value in DispenserBlockModule: " + dispensedItemType);
+                default -> throw new IllegalArgumentException(
+                        "Unexpected value in DispenserBlockModule: " + dispensedItemType);
             }
         }
     }
@@ -205,7 +224,7 @@ public class DispenserBlocksModule implements PurpurExtrasModule, Listener {
     private ItemStack consumeItem(ItemStack itemStack) {
         ItemStack consumed = itemStack.clone();
         consumed.setAmount(1);
-        itemStack.setAmount(itemStack.getAmount()-1);
+        itemStack.setAmount(itemStack.getAmount() - 1);
         return consumed;
     }
 
@@ -223,34 +242,41 @@ public class DispenserBlocksModule implements PurpurExtrasModule, Listener {
         return false;
     }
 
-    private void emptyCauldronHandler(Block cauldron, BlockData cauldronType, ItemStack dispensingItem,
-                                      Location dispLocation, Sound uniqueSound){
+    private void emptyCauldronHandler(
+            Block cauldron,
+            BlockData cauldronType,
+            ItemStack dispensingItem,
+            Location dispLocation,
+            Sound uniqueSound) {
         cauldron.setBlockData(cauldronType);
         dispensingItem.setType(Material.BUCKET);
         dispLocation.getWorld().playSound(dispLocation, Sound.BLOCK_DISPENSER_DISPENSE, SoundCategory.BLOCKS, 1, 1);
         dispLocation.getWorld().playSound(dispLocation, uniqueSound, SoundCategory.BLOCKS, 1, 1);
     }
 
-    private void fullCauldronHandler(Block cauldron,
-                                    ItemStack items,
-                                    org.bukkit.block.Dispenser dispenserBlock,
-                                    Material newItem,
-                                    Sound uniqueSound){
+    private void fullCauldronHandler(
+            Block cauldron,
+            ItemStack items,
+            org.bukkit.block.Dispenser dispenserBlock,
+            Material newItem,
+            Sound uniqueSound) {
         cauldron.setType(Material.CAULDRON);
         Inventory inv = dispenserBlock.getInventory();
         ItemStack newItemDrop = new ItemStack(newItem);
 
-        //handling for stacked buckets
-        if(items.getAmount() > 1){
+        // handling for stacked buckets
+        if (items.getAmount() > 1) {
             items.setAmount(items.getAmount() - 1);
             Map<Integer, ItemStack> map = inv.addItem(newItemDrop);
-            if(!map.isEmpty()) {
+            if (!map.isEmpty()) {
                 cauldron.getWorld().dropItem(cauldron.getLocation(), newItemDrop);
             }
         } else {
             items.setType(newItem);
         }
-        dispenserBlock.getWorld().playSound(dispenserBlock.getLocation(), Sound.BLOCK_DISPENSER_DISPENSE, SoundCategory.BLOCKS, 1, 1);
+        dispenserBlock
+                .getWorld()
+                .playSound(dispenserBlock.getLocation(), Sound.BLOCK_DISPENSER_DISPENSE, SoundCategory.BLOCKS, 1, 1);
         dispenserBlock.getWorld().playSound(dispenserBlock.getLocation(), uniqueSound, SoundCategory.BLOCKS, 1, 1);
     }
 }

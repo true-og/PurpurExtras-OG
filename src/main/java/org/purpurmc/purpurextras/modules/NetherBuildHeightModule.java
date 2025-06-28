@@ -35,7 +35,9 @@ public class NetherBuildHeightModule implements PurpurExtrasModule, Listener {
     protected NetherBuildHeightModule() {
         PurpurConfig config = PurpurExtrasOG.getPurpurConfig();
         this.configBuildHeight = config.getInt("settings.block-building-above-nether.height-limit", 128);
-        this.noPermissionMessageContent = config.getString("settings.block-building-above-nether.no-permission-message", "<red>Max build height in this world is: <gold><height>");
+        this.noPermissionMessageContent = config.getString(
+                "settings.block-building-above-nether.no-permission-message",
+                "<red>Max build height in this world is: <gold><height>");
     }
 
     @Override
@@ -46,21 +48,27 @@ public class NetherBuildHeightModule implements PurpurExtrasModule, Listener {
 
     @Override
     public boolean shouldEnable() {
-        DefaultPermissions.registerPermission(netherBuildHeightBypassPermission, "Allows player to bypass the configured max nether build height", PermissionDefault.OP);
+        DefaultPermissions.registerPermission(
+                netherBuildHeightBypassPermission,
+                "Allows player to bypass the configured max nether build height",
+                PermissionDefault.OP);
         return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.block-building-above-nether.enabled", false);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onNetherRoofBuild(BlockPlaceEvent event){
+    public void onNetherRoofBuild(BlockPlaceEvent event) {
         Block block = event.getBlock();
         Player player = event.getPlayer();
         if (!(block.getWorld().getEnvironment().equals(World.Environment.NETHER))) return;
         if (block.getLocation().getBlockY() < configBuildHeight) return;
         if (player.hasPermission(netherBuildHeightBypassPermission)) return;
         if (!"".equals(noPermissionMessageContent)) {
-            player.sendActionBar(PurpurExtrasOG.getInstance().miniMessage.deserialize(noPermissionMessageContent, Placeholder.unparsed("height", String.valueOf(configBuildHeight))));
+            player.sendActionBar(PurpurExtrasOG.getInstance()
+                    .miniMessage
+                    .deserialize(
+                            noPermissionMessageContent,
+                            Placeholder.unparsed("height", String.valueOf(configBuildHeight))));
         }
         event.setCancelled(true);
     }
-
 }

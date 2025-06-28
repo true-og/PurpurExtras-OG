@@ -1,5 +1,9 @@
 package org.purpurmc.purpurextras.modules;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.SplittableRandom;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -13,11 +17,6 @@ import org.bukkit.event.raid.RaidSpawnWaveEvent;
 import org.bukkit.event.raid.RaidStopEvent;
 import org.bukkit.inventory.ItemStack;
 import org.purpurmc.purpurextras.PurpurExtrasOG;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.SplittableRandom;
-import java.util.UUID;
 
 /**
  * Modifies the drop rate of totems from Evokers spawned in a raid
@@ -44,13 +43,16 @@ public class RaidTotemDropsModule implements PurpurExtrasModule, Listener {
         raiders.remove(event.getEntity().getUniqueId());
         if (event.getEntityType() != EntityType.EVOKER) return;
         boolean totem = dropChance >= 100 || random.nextInt(1, 101) <= dropChance;
-        event.getDrops().stream().filter(i -> i.getType() == Material.TOTEM_OF_UNDYING).findFirst().ifPresentOrElse(i -> {
-            if (!totem)
-                event.getDrops().remove(i);
-        }, () -> {
-            if (totem)
-                event.getDrops().add(new ItemStack(Material.TOTEM_OF_UNDYING));
-        });
+        event.getDrops().stream()
+                .filter(i -> i.getType() == Material.TOTEM_OF_UNDYING)
+                .findFirst()
+                .ifPresentOrElse(
+                        i -> {
+                            if (!totem) event.getDrops().remove(i);
+                        },
+                        () -> {
+                            if (totem) event.getDrops().add(new ItemStack(Material.TOTEM_OF_UNDYING));
+                        });
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)

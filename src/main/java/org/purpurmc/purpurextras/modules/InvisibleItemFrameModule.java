@@ -31,12 +31,16 @@ public class InvisibleItemFrameModule implements PurpurExtrasModule, Listener {
 
     @Override
     public boolean shouldEnable() {
-        DefaultPermissions.registerPermission(invisFramePermission, "Allows player to shift-right-click an item frame to turn it invisible", PermissionDefault.OP);
-        return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.blocks.shift-right-click-for-invisible-item-frames", false);
+        DefaultPermissions.registerPermission(
+                invisFramePermission,
+                "Allows player to shift-right-click an item frame to turn it invisible",
+                PermissionDefault.OP);
+        return PurpurExtrasOG.getPurpurConfig()
+                .getBoolean("settings.blocks.shift-right-click-for-invisible-item-frames", false);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onItemFrameInteract(PlayerInteractEntityEvent event){
+    public void onItemFrameInteract(PlayerInteractEntityEvent event) {
         if (event.getHand().equals(EquipmentSlot.OFF_HAND)) return;
 
         Player player = event.getPlayer();

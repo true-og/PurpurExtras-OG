@@ -1,7 +1,10 @@
 package org.purpurmc.purpurextras.modules;
 
-import org.purpurmc.purpurextras.PurpurExtrasOG;
-import org.purpurmc.purpurextras.PurpurConfig;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Map;
+import java.util.logging.Logger;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -10,12 +13,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Map;
-import java.util.logging.Logger;
+import org.purpurmc.purpurextras.PurpurConfig;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 /**
  * If enabled, block list will be used. Key is the block material that will be converted from and value
@@ -26,6 +25,7 @@ public class AnvilChangesBlocksModule implements PurpurExtrasModule, Listener {
 
     private final HashSet<Material> anvils = new HashSet<>();
     private final HashMap<Material, Material> anvilCrushBlocksIndex = new HashMap<>();
+
     protected AnvilChangesBlocksModule() {
         PurpurConfig config = PurpurExtrasOG.getPurpurConfig();
         Map<String, Object> defaults = new HashMap<>();
@@ -53,7 +53,6 @@ public class AnvilChangesBlocksModule implements PurpurExtrasModule, Listener {
             }
             anvilCrushBlocksIndex.put(materialFrom, materialTo);
         }
-
     }
 
     @Override
@@ -78,5 +77,4 @@ public class AnvilChangesBlocksModule implements PurpurExtrasModule, Listener {
 
         blockBelowAnvil.setType(anvilCrushBlocksIndex.get(blockBelowAnvil.getType()), true);
     }
-    
 }

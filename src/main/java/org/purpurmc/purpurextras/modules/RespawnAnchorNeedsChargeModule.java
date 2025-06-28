@@ -1,6 +1,5 @@
 package org.purpurmc.purpurextras.modules;
 
-import org.purpurmc.purpurextras.PurpurExtrasOG;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.util.BoundingBox;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 /**
  * If false, will make it so respawn anchors will never run out of charges.
@@ -19,6 +19,7 @@ import org.bukkit.util.BoundingBox;
 public class RespawnAnchorNeedsChargeModule implements PurpurExtrasModule, Listener {
 
     protected RespawnAnchorNeedsChargeModule() {}
+
     @Override
     public void enable() {
         PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
@@ -27,29 +28,31 @@ public class RespawnAnchorNeedsChargeModule implements PurpurExtrasModule, Liste
 
     @Override
     public boolean shouldEnable() {
-        return !(PurpurExtrasOG.getPurpurConfig().getBoolean("settings.gameplay-settings.respawn-anchor-needs-charges", true));
+        return !(PurpurExtrasOG.getPurpurConfig()
+                .getBoolean("settings.gameplay-settings.respawn-anchor-needs-charges", true));
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        if (!event.isAnchorSpawn())
-            return;
+        if (!event.isAnchorSpawn()) return;
         Block block = event.getRespawnLocation().getBlock();
         BoundingBox box = BoundingBox.of(block.getLocation(), 2, 2, 2);
         for (int y = (int) box.getMinY(); y < box.getMaxY(); y++) {
             for (int x = (int) box.getMinX(); x < box.getMaxX(); x++) {
                 for (int z = (int) box.getMinZ(); z < box.getMaxZ(); z++) {
                     Location location = new Location(event.getRespawnLocation().getWorld(), x, y, z);
-                    if (!location.getBlock().getType().equals(Material.RESPAWN_ANCHOR))
-                        continue;
+                    if (!location.getBlock().getType().equals(Material.RESPAWN_ANCHOR)) continue;
                     Block potentialAnchor = location.getBlock();
-                    Bukkit.getScheduler().runTaskLater(PurpurExtrasOG.getInstance(), () -> {
-                        if (!potentialAnchor.getType().equals(Material.RESPAWN_ANCHOR))
-                            return;
-                        RespawnAnchor anchor = (RespawnAnchor) potentialAnchor.getBlockData();
-                        anchor.setCharges(anchor.getMaximumCharges());
-                        potentialAnchor.setBlockData(anchor);
-                    }, 2);
+                    Bukkit.getScheduler()
+                            .runTaskLater(
+                                    PurpurExtrasOG.getInstance(),
+                                    () -> {
+                                        if (!potentialAnchor.getType().equals(Material.RESPAWN_ANCHOR)) return;
+                                        RespawnAnchor anchor = (RespawnAnchor) potentialAnchor.getBlockData();
+                                        anchor.setCharges(anchor.getMaximumCharges());
+                                        potentialAnchor.setBlockData(anchor);
+                                    },
+                                    2);
                 }
             }
         }

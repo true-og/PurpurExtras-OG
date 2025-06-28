@@ -1,13 +1,13 @@
 package org.purpurmc.purpurextras.modules;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
-import org.purpurmc.purpurextras.PurpurExtrasOG;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 /**
  * Allows players to send a message with a slash at the start by escaping it with backslash
@@ -16,6 +16,7 @@ import org.bukkit.event.Listener;
 public class EscapeCommandSlashModule implements PurpurExtrasModule, Listener {
 
     protected EscapeCommandSlashModule() {}
+
     @Override
     public void enable() {
         PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
@@ -32,8 +33,8 @@ public class EscapeCommandSlashModule implements PurpurExtrasModule, Listener {
         String message = PlainTextComponentSerializer.plainText().serialize(event.message());
         String[] messageSplit = message.split(" ");
         String command = messageSplit[0].substring(1);
-        Component component = event.message().replaceText(
-                TextReplacementConfig.builder()
+        Component component = event.message()
+                .replaceText(TextReplacementConfig.builder()
                         .match("(\\\\/\\S*)")
                         .replacement(command)
                         .once()

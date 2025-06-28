@@ -1,5 +1,6 @@
 package org.purpurmc.purpurextras.modules;
 
+import java.util.Iterator;
 import org.bukkit.Bukkit;
 import org.bukkit.Keyed;
 import org.bukkit.entity.Player;
@@ -12,8 +13,6 @@ import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.util.permissions.DefaultPermissions;
 import org.purpurmc.purpurextras.PurpurExtrasOG;
 
-import java.util.Iterator;
-
 /**
  * Unlocks all available recipes on join.
  * Players can be exempt from this by denying them purpurextras.unlockallrecipesonjoin permission.
@@ -23,6 +22,7 @@ public class UnlockAllRecipesModule implements PurpurExtrasModule, Listener {
     private final String permission = "purpurextras.unlockallrecipesonjoin";
 
     protected UnlockAllRecipesModule() {}
+
     @Override
     public void enable() {
         PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
@@ -34,8 +34,7 @@ public class UnlockAllRecipesModule implements PurpurExtrasModule, Listener {
         DefaultPermissions.registerPermission(
                 permission,
                 "Players with this permission will have all recipes unlocked upon login if that feature is enabled in the config",
-                PermissionDefault.TRUE
-        );
+                PermissionDefault.TRUE);
         return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.unlock-all-recipes-on-join", false);
     }
 
@@ -50,5 +49,4 @@ public class UnlockAllRecipesModule implements PurpurExtrasModule, Listener {
             player.discoverRecipe(keyedRecipe.getKey());
         }
     }
-
 }

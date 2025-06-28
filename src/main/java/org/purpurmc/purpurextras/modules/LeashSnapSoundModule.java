@@ -34,10 +34,13 @@ public class LeashSnapSoundModule implements PurpurExtrasModule, Listener {
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onLeashBreak(EntityUnleashEvent event){
+    public void onLeashBreak(EntityUnleashEvent event) {
 
         if (event.getReason() != EntityUnleashEvent.UnleashReason.DISTANCE) return;
 
-        event.getEntity().getWorld().playSound(event.getEntity().getLocation(), sound, SoundCategory.PLAYERS, (float) volume, (float) pitch);
+        event.getEntity()
+                .getWorld()
+                .playSound(
+                        event.getEntity().getLocation(), sound, SoundCategory.PLAYERS, (float) volume, (float) pitch);
     }
 }

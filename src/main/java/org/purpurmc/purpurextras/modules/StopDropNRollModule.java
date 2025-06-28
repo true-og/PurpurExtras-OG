@@ -1,5 +1,7 @@
 package org.purpurmc.purpurextras.modules;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -8,9 +10,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.purpurmc.purpurextras.PurpurExtrasOG;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Allows the player to Stop Drop N Roll to get extinguished from any flames.
@@ -38,7 +37,7 @@ public class StopDropNRollModule implements PurpurExtrasModule, Listener {
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPlayerToggleSneak(PlayerToggleSneakEvent event){
+    public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
         boolean isSneaking = event.isSneaking();
 

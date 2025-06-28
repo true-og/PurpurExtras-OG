@@ -1,11 +1,11 @@
 package org.purpurmc.purpurextras.modules;
 
-import org.purpurmc.purpurextras.PurpurExtrasOG;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 /**
  * If enabled, players having target.bypass.<mojang_mob_name> permission won't be targetted by that type of mob.
@@ -13,6 +13,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 public class MobNoTargetModule implements PurpurExtrasModule, Listener {
 
     protected MobNoTargetModule() {}
+
     @Override
     public void enable() {
         PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
@@ -27,7 +28,8 @@ public class MobNoTargetModule implements PurpurExtrasModule, Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onMobTarget(EntityTargetEvent event) {
         if (!(event.getTarget() instanceof Player player)) return;
-        if (!player.hasPermission("target.bypass." + event.getEntityType().getKey().getKey())) return;
+        if (!player.hasPermission(
+                "target.bypass." + event.getEntityType().getKey().getKey())) return;
         event.setCancelled(true);
     }
 }

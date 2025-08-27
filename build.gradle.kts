@@ -80,7 +80,7 @@ tasks.withType<AbstractArchiveTask>().configureEach { // Ensure reproducible .ja
 tasks.shadowJar {
     exclude("io.github.miniplaceholders.*") // Exclude the MiniPlaceholders package from being shadowed.
     archiveClassifier.set("") // Use empty string instead of null.
-    archiveFileName.set("PurpurExtras-${project.version}.jar")
+    archiveFileName.set("PurpurExtras-OG-${project.version}.jar")
     relocate("org.reflections", "org.purpurmc.purpurextras.reflections")
     relocate("me.youhavetrouble.entiddy", "org.purpurmc.purpurextras.entiddy")
     minimize()

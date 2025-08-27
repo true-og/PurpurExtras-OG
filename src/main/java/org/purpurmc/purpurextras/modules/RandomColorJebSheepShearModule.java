@@ -23,6 +23,7 @@ public class RandomColorJebSheepShearModule implements PurpurExtrasModule, Liste
     private final List<Material> coloredWool = new ArrayList<>();
 
     protected RandomColorJebSheepShearModule() {
+
         this.coloredWool.add(Material.BLACK_WOOL);
         this.coloredWool.add(Material.BLUE_WOOL);
         this.coloredWool.add(Material.BROWN_WOOL);
@@ -39,23 +40,31 @@ public class RandomColorJebSheepShearModule implements PurpurExtrasModule, Liste
         this.coloredWool.add(Material.RED_WOOL);
         this.coloredWool.add(Material.WHITE_WOOL);
         this.coloredWool.add(Material.YELLOW_WOOL);
+
     }
 
     @Override
     public void enable() {
+
         PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+
     }
 
     @Override
     public boolean shouldEnable() {
+
         return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.mobs.sheep.jeb-shear-random-color", false);
+
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onJebSheepShear(PlayerShearEntityEvent event) {
-        if (!(event.getEntity() instanceof Sheep sheep)) return;
-        if (!isJebSheep(sheep)) return;
+
+        if (!(event.getEntity() instanceof Sheep sheep))
+            return;
+        if (!isJebSheep(sheep))
+            return;
 
         // Remove default drops
         event.setCancelled(true);
@@ -64,12 +73,16 @@ public class RandomColorJebSheepShearModule implements PurpurExtrasModule, Liste
         int randomIndex = new Random().nextInt(coloredWool.size());
         ItemStack customWool = new ItemStack(coloredWool.get(randomIndex));
         event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), customWool);
+
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onJebSheepShear(BlockShearEntityEvent event) {
-        if (!(event.getEntity() instanceof Sheep sheep)) return;
-        if (!isJebSheep(sheep)) return;
+
+        if (!(event.getEntity() instanceof Sheep sheep))
+            return;
+        if (!isJebSheep(sheep))
+            return;
 
         // Remove default drops
         event.setCancelled(true);
@@ -78,15 +91,22 @@ public class RandomColorJebSheepShearModule implements PurpurExtrasModule, Liste
         int randomIndex = new Random().nextInt(coloredWool.size());
         ItemStack customWool = new ItemStack(coloredWool.get(randomIndex));
         event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), customWool);
+
     }
 
     // Helper method to check if the sheep is a Jeb Sheep.
     private boolean isJebSheep(Sheep sheep) {
+
         Component customName = sheep.customName();
         if (customName != null) {
+
             String name = PlainTextComponentSerializer.plainText().serialize(customName);
             return "jeb_".equals(name);
+
         }
+
         return false;
+
     }
+
 }

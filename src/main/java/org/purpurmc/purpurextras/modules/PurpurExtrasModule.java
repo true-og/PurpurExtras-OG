@@ -24,19 +24,27 @@ public interface PurpurExtrasModule {
 
         HandlerList.unregisterAll(PurpurExtrasOG.getInstance());
 
-        Set<Class<?>> subTypes =
-                reflections.get(Scanners.SubTypes.of(PurpurExtrasModule.class).asClass());
+        Set<Class<?>> subTypes = reflections.get(Scanners.SubTypes.of(PurpurExtrasModule.class).asClass());
 
         subTypes.forEach(clazz -> {
+
             try {
-                PurpurExtrasModule module =
-                        (PurpurExtrasModule) clazz.getDeclaredConstructor().newInstance();
+
+                PurpurExtrasModule module = (PurpurExtrasModule) clazz.getDeclaredConstructor().newInstance();
                 if (module.shouldEnable()) {
+
                     module.enable();
+
                 }
+
             } catch (Exception e) {
+
                 PurpurExtrasOG.getInstance().getSLF4JLogger().warn("Failed to load module " + clazz.getSimpleName());
+
             }
+
         });
+
     }
+
 }

@@ -18,8 +18,9 @@ import org.purpurmc.purpurextras.PurpurConfig;
 import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 /**
- * If speed-multiplier value is higher than 0, player will gain speed potion effect of the level of that value.
- * This only accepts integer values. Which blocks count as paths can be configured by listing them in path-blocks list.
+ * If speed-multiplier value is higher than 0, player will gain speed potion
+ * effect of the level of that value. This only accepts integer values. Which
+ * blocks count as paths can be configured by listing them in path-blocks list.
  */
 public class RunFasterOnPathsModule implements PurpurExtrasModule, Listener {
 
@@ -29,6 +30,7 @@ public class RunFasterOnPathsModule implements PurpurExtrasModule, Listener {
     private final PotionEffect speedEffect;
 
     protected RunFasterOnPathsModule() {
+
         List<String> defaults = new ArrayList<>();
         defaults.add(Material.DIRT_PATH.toString());
 
@@ -39,43 +41,61 @@ public class RunFasterOnPathsModule implements PurpurExtrasModule, Listener {
         speedMultiplier = Math.max(0, rawSpeedMultiplier);
         int duration = config.getInt("settings.gameplay-settings.run-faster-on-paths.duration", 2);
 
-        speedEffect = new PotionEffect(
-                PotionEffectType.SPEED, duration, Math.max(speedMultiplier - 1, 0), false, false, false);
+        speedEffect = new PotionEffect(PotionEffectType.SPEED, duration, Math.max(speedMultiplier - 1, 0), false, false,
+                false);
 
-        List<String> rawPathBlocks =
-                config.getList("settings.gameplay-settings.run-faster-on-paths.path-blocks", defaults);
+        List<String> rawPathBlocks = config.getList("settings.gameplay-settings.run-faster-on-paths.path-blocks",
+                defaults);
         rawPathBlocks.forEach((string) -> {
+
             Material material = Material.getMaterial(string.toUpperCase(Locale.ENGLISH));
             if (material == null) {
+
                 logger.warning(string + " is not a valid block material.");
                 return;
+
             }
+
             pathBlocks.add(material);
+
         });
+
     }
 
     @Override
     public void enable() {
+
         PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+
     }
 
     @Override
     public boolean shouldEnable() {
+
         return speedMultiplier > 0;
+
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
     public void onPlayerMoveOnPath(PlayerMoveEvent event) {
-        if (!event.hasChangedPosition()) return;
+
+        if (!event.hasChangedPosition())
+            return;
         Player player = event.getPlayer();
-        if (player.isFlying()) return;
-        if (player.isGliding()) return;
-        if (player.isInsideVehicle()) return;
+        if (player.isFlying())
+            return;
+        if (player.isGliding())
+            return;
+        if (player.isInsideVehicle())
+            return;
 
         Block block = player.getLocation().clone().subtract(0.0, 0.1, 0.0).getBlock();
-        if (!pathBlocks.contains(block.getType())) return;
+        if (!pathBlocks.contains(block.getType()))
+            return;
 
         player.addPotionEffect(speedEffect);
+
     }
+
 }

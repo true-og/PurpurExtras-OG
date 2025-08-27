@@ -13,72 +13,98 @@ import org.bukkit.inventory.ItemStack;
 import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 /**
- * If enabled, dropping an anvil from significant height onto minecart with content
- * (chest minecart, furnace minecart, etc.) in its item form, it will not destroy the item,
- * but split the minecart and the content and drop them both. Does the same to chest boats
+ * If enabled, dropping an anvil from significant height onto minecart with
+ * content (chest minecart, furnace minecart, etc.) in its item form, it will
+ * not destroy the item, but split the minecart and the content and drop them
+ * both. Does the same to chest boats
  */
 public class AnvilSplitsMinecartsAndBoatsModule implements PurpurExtrasModule, Listener {
 
     private final boolean splitBoats, splitMinecarts;
 
     protected AnvilSplitsMinecartsAndBoatsModule() {
+
         this.splitMinecarts = PurpurExtrasOG.getPurpurConfig().getBoolean("settings.anvil-splits-minecarts", false);
         this.splitBoats = PurpurExtrasOG.getPurpurConfig().getBoolean("settings.anvil-splits-boats", false);
+
     }
 
     @Override
     public void enable() {
+
         PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+
     }
 
     @Override
     public boolean shouldEnable() {
+
         return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.anvil-splits-minecarts", false)
                 || PurpurExtrasOG.getPurpurConfig().getBoolean("settings.anvil-splits-boats", false);
+
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onAnvilDrop(EntityDamageByEntityEvent event) {
 
-        if (!(event.getEntity() instanceof Item item)) return;
-        if (!(event.getDamager() instanceof FallingBlock fallingBlock)) return;
+        if (!(event.getEntity() instanceof Item item))
+            return;
+        if (!(event.getDamager() instanceof FallingBlock fallingBlock))
+            return;
 
-        if (!MaterialSetTag.ANVIL.isTagged(fallingBlock.getBlockData().getMaterial())) return;
+        if (!MaterialSetTag.ANVIL.isTagged(fallingBlock.getBlockData().getMaterial()))
+            return;
 
         Material itemMaterial = item.getItemStack().getType();
         Location location = event.getEntity().getLocation();
 
         if (splitBoats && MaterialSetTag.ITEMS_CHEST_BOATS.isTagged(itemMaterial)) {
+
             String boatMaterialString = item.getItemStack().getType().toString().replace("_CHEST", "");
             Material boatMaterial = Material.matchMaterial(boatMaterialString);
-            if (boatMaterial == null) return;
+            if (boatMaterial == null)
+                return;
             location.getWorld().dropItemNaturally(location, new ItemStack(Material.CHEST));
             location.getWorld().dropItemNaturally(location, new ItemStack(boatMaterial));
             return;
+
         }
 
-        if (!splitMinecarts) return;
+        if (!splitMinecarts)
+            return;
 
         switch (itemMaterial) {
+
             case CHEST_MINECART -> {
+
                 location.getWorld().dropItemNaturally(location, new ItemStack(Material.CHEST));
                 location.getWorld().dropItemNaturally(location, new ItemStack(Material.MINECART));
+
             }
             case FURNACE_MINECART -> {
+
                 location.getWorld().dropItemNaturally(location, new ItemStack(Material.FURNACE));
                 location.getWorld().dropItemNaturally(location, new ItemStack(Material.MINECART));
+
             }
             case TNT_MINECART -> {
+
                 location.getWorld().dropItemNaturally(location, new ItemStack(Material.TNT));
                 location.getWorld().dropItemNaturally(location, new ItemStack(Material.MINECART));
+
             }
             case HOPPER_MINECART -> {
+
                 location.getWorld().dropItemNaturally(location, new ItemStack(Material.HOPPER));
                 location.getWorld().dropItemNaturally(location, new ItemStack(Material.MINECART));
+
             }
             default -> throw new IllegalArgumentException(
                     "Unexpected item in AnvilSplitsMinecartsAndBoatsModule: " + itemMaterial);
+
         }
+
     }
+
 }

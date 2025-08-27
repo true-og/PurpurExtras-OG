@@ -17,30 +17,37 @@ public class LeashSnapSoundModule implements PurpurExtrasModule, Listener {
     private double pitch;
 
     protected LeashSnapSoundModule() {
+
         sound = PurpurExtrasOG.getPurpurConfig().getString("settings.leash-snap.sound", "minecraft:block.bamboo.break");
         volume = PurpurExtrasOG.getPurpurConfig().getDouble("settings.leash-snap.volume", 1f);
         pitch = PurpurExtrasOG.getPurpurConfig().getDouble("settings.leash-snap.pitch", 1.25f);
+
     }
 
     @Override
     public void enable() {
+
         PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+
     }
 
     @Override
     public boolean shouldEnable() {
+
         return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.leash-snap.enabled", false) && sound != null;
+
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onLeashBreak(EntityUnleashEvent event) {
 
-        if (event.getReason() != EntityUnleashEvent.UnleashReason.DISTANCE) return;
+        if (event.getReason() != EntityUnleashEvent.UnleashReason.DISTANCE)
+            return;
 
-        event.getEntity()
-                .getWorld()
-                .playSound(
-                        event.getEntity().getLocation(), sound, SoundCategory.PLAYERS, (float) volume, (float) pitch);
+        event.getEntity().getWorld().playSound(event.getEntity().getLocation(), sound, SoundCategory.PLAYERS,
+                (float) volume, (float) pitch);
+
     }
+
 }

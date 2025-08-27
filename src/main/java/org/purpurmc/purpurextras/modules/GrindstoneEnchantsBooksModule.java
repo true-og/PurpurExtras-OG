@@ -18,67 +18,94 @@ import org.purpurmc.purpur.event.inventory.GrindstoneTakeResultEvent;
 import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 /**
- * If enabled and player has books in their inventory while disenchanting item in a grindstone,
- * books will be consumed to return the enchantments removed from the item to the player.
- * No exp will drop when doing this.
+ * If enabled and player has books in their inventory while disenchanting item
+ * in a grindstone, books will be consumed to return the enchantments removed
+ * from the item to the player. No exp will drop when doing this.
  * <p>
- * Listeners yoinked from <a href="https://gist.github.com/BillyGalbreath/de0f899a27b39daad5f5bf7c00e11045">here</a>}
+ * Listeners yoinked from <a href=
+ * "https://gist.github.com/BillyGalbreath/de0f899a27b39daad5f5bf7c00e11045">here</a>}
  */
 public class GrindstoneEnchantsBooksModule implements PurpurExtrasModule, Listener {
 
     private final ItemStack BOOK = new ItemStack(Material.BOOK);
 
-    protected GrindstoneEnchantsBooksModule() {}
+    protected GrindstoneEnchantsBooksModule() {
+
+    }
 
     @Override
     public void enable() {
+
         try {
+
             Class.forName("org.purpurmc.purpur.event.inventory.GrindstoneTakeResultEvent");
+
         } catch (ClassNotFoundException e) {
-            PurpurExtrasOG.getInstance()
-                    .getLogger()
-                    .warning(this.getClass().getSimpleName()
-                            + " module requires you to run Purpur as your server software.");
+
+            PurpurExtrasOG.getInstance().getLogger().warning(
+                    this.getClass().getSimpleName() + " module requires you to run Purpur as your server software.");
             return;
+
         }
+
         PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+
     }
 
     @Override
     public boolean shouldEnable() {
+
         return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.grindstone.gives-enchants-back", false);
+
     }
 
     @EventHandler
     public void on(GrindstoneTakeResultEvent event) {
+
         GrindstoneInventory grindstoneInventory = event.getInventory();
 
         ItemStack lowerItem = grindstoneInventory.getLowerItem();
         if (lowerItem != null && !lowerItem.getType().isEmpty()) {
+
             return; // lower slot is not empty, do nothing
+
         }
 
         ItemStack upperItem = grindstoneInventory.getUpperItem();
         if (upperItem == null || upperItem.getType().isEmpty()) {
+
             return; // upper slot is empty, do nothing
+
         }
 
         Map<Enchantment, Integer> enchants;
         if (upperItem.getType() == Material.ENCHANTED_BOOK) {
+
             if (!upperItem.hasItemMeta()) {
+
                 return;
+
             }
+
             enchants = ((EnchantmentStorageMeta) upperItem.getItemMeta()).getStoredEnchants();
+
         } else {
+
             if (!upperItem.hasEnchants()) {
+
                 return;
+
             }
+
             enchants = upperItem.getEnchants();
+
         }
 
         if (enchants.isEmpty()) {
+
             return;
+
         }
 
         Player player = event.getPlayer();
@@ -87,17 +114,27 @@ public class GrindstoneEnchantsBooksModule implements PurpurExtrasModule, Listen
         PlayerInventory playerInventory = player.getInventory();
 
         for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
+
             if (entry.getKey().isCursed()) {
+
                 continue; // grindstones don't remove curses
+
             }
+
             if (player.getGameMode() != GameMode.CREATIVE) {
+
                 if (!playerInventory.containsAtLeast(BOOK, 1)) {
+
                     return; // no more books to extract to
+
                 }
 
                 if (!playerInventory.removeItem(BOOK).isEmpty()) {
+
                     return; // could not remove book
+
                 }
+
             }
 
             ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);
@@ -106,10 +143,15 @@ public class GrindstoneEnchantsBooksModule implements PurpurExtrasModule, Listen
             book.setItemMeta(meta);
 
             playerInventory.addItem(book).forEach((index, stack) -> {
+
                 Item drop = world.dropItemNaturally(location, stack);
                 drop.setPickupDelay(0);
+
             });
             event.setExperienceAmount(0);
+
         }
+
     }
+
 }

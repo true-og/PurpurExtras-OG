@@ -17,17 +17,20 @@ public final class PurpurExtrasOG extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
         try {
+
             Class.forName("org.purpurmc.purpur.PurpurConfig");
+
         } catch (ClassNotFoundException e) {
+
             getLogger().warning("---------------------------------------------");
             getLogger().warning("Some features may not work without Purpur!");
             getLogger().warning("PurpurExtras was created to compliment Purpur, and it appears you're not using it!");
-            getLogger()
-                    .warning(
-                            "Purpur is a drop-in replacement for " + getServer().getName() + ".");
+            getLogger().warning("Purpur is a drop-in replacement for " + getServer().getName() + ".");
             getLogger().warning("You can get Purpur on https://purpurmc.org/downloads");
             getLogger().warning("---------------------------------------------");
+
         }
 
         instance = this;
@@ -35,33 +38,47 @@ public final class PurpurExtrasOG extends JavaPlugin {
 
         PluginCommand command = getCommand("purpurextras");
         if (command != null) {
+
             PurpurExtrasCommand cmd = new PurpurExtrasCommand();
             command.setExecutor(cmd);
             command.setTabCompleter(cmd);
+
         }
 
         PurpurExtrasModule.reloadModules();
         config.saveConfig();
+
     }
 
     public static PurpurConfig getPurpurConfig() {
+
         return config;
+
     }
 
     public static PurpurExtrasOG getInstance() {
+
         return instance;
+
     }
 
     void reloadPurpurExtrasConfig(CommandSender commandSender) {
+
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+
             config = new PurpurConfig();
             PurpurExtrasModule.reloadModules();
             config.saveConfig();
             commandSender.sendMessage(Component.text("PurpurExtras configuration reloaded!"));
+
         });
+
     }
 
     public static NamespacedKey key(String string) {
+
         return new NamespacedKey(PurpurExtrasOG.getInstance(), string);
+
     }
+
 }

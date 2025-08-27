@@ -14,17 +14,15 @@ import org.purpurmc.purpurextras.PurpurConfig;
 import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 /**
- * Adds a build height limit to the nether
- * Configuration:
+ * Adds a build height limit to the nether Configuration:
  *
- * **enabled**
- * Enables the feature.
+ * **enabled** Enables the feature.
  *
- * **height-limit**
- * Maximum height players without purpurextras.netherbuildheightbypass permission can build in nether worlds.
+ * **height-limit** Maximum height players without
+ * purpurextras.netherbuildheightbypass permission can build in nether worlds.
  *
- * **no-permission-message**
- * Message to display in action bar when trying to build above set limit in nether worlds.
+ * **no-permission-message** Message to display in action bar when trying to
+ * build above set limit in nether worlds.
  */
 public class NetherBuildHeightModule implements PurpurExtrasModule, Listener {
 
@@ -33,42 +31,51 @@ public class NetherBuildHeightModule implements PurpurExtrasModule, Listener {
     private final String netherBuildHeightBypassPermission = "purpurextras.netherbuildheightbypass";
 
     protected NetherBuildHeightModule() {
+
         PurpurConfig config = PurpurExtrasOG.getPurpurConfig();
         this.configBuildHeight = config.getInt("settings.block-building-above-nether.height-limit", 128);
-        this.noPermissionMessageContent = config.getString(
-                "settings.block-building-above-nether.no-permission-message",
+        this.noPermissionMessageContent = config.getString("settings.block-building-above-nether.no-permission-message",
                 "<red>Max build height in this world is: <gold><height>");
+
     }
 
     @Override
     public void enable() {
+
         PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+
     }
 
     @Override
     public boolean shouldEnable() {
-        DefaultPermissions.registerPermission(
-                netherBuildHeightBypassPermission,
-                "Allows player to bypass the configured max nether build height",
-                PermissionDefault.OP);
+
+        DefaultPermissions.registerPermission(netherBuildHeightBypassPermission,
+                "Allows player to bypass the configured max nether build height", PermissionDefault.OP);
         return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.block-building-above-nether.enabled", false);
+
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onNetherRoofBuild(BlockPlaceEvent event) {
+
         Block block = event.getBlock();
         Player player = event.getPlayer();
-        if (!(block.getWorld().getEnvironment().equals(World.Environment.NETHER))) return;
-        if (block.getLocation().getBlockY() < configBuildHeight) return;
-        if (player.hasPermission(netherBuildHeightBypassPermission)) return;
+        if (!(block.getWorld().getEnvironment().equals(World.Environment.NETHER)))
+            return;
+        if (block.getLocation().getBlockY() < configBuildHeight)
+            return;
+        if (player.hasPermission(netherBuildHeightBypassPermission))
+            return;
         if (!"".equals(noPermissionMessageContent)) {
-            player.sendActionBar(PurpurExtrasOG.getInstance()
-                    .miniMessage
-                    .deserialize(
-                            noPermissionMessageContent,
-                            Placeholder.unparsed("height", String.valueOf(configBuildHeight))));
+
+            player.sendActionBar(PurpurExtrasOG.getInstance().miniMessage.deserialize(noPermissionMessageContent,
+                    Placeholder.unparsed("height", String.valueOf(configBuildHeight))));
+
         }
+
         event.setCancelled(true);
+
     }
+
 }

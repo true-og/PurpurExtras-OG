@@ -10,35 +10,40 @@ import org.bukkit.event.Listener;
 import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 /**
- * Allows players to send a message with a slash at the start by escaping it with backslash
- * (\/command that will appear as /command in chat).
+ * Allows players to send a message with a slash at the start by escaping it
+ * with backslash (\/command that will appear as /command in chat).
  */
 public class EscapeCommandSlashModule implements PurpurExtrasModule, Listener {
 
-    protected EscapeCommandSlashModule() {}
+    protected EscapeCommandSlashModule() {
+
+    }
 
     @Override
     public void enable() {
+
         PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+
     }
 
     @Override
     public boolean shouldEnable() {
+
         return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.chat.escape-commands", false);
+
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onCommandEscape(AsyncChatEvent event) {
+
         String message = PlainTextComponentSerializer.plainText().serialize(event.message());
         String[] messageSplit = message.split(" ");
         String command = messageSplit[0].substring(1);
         Component component = event.message()
-                .replaceText(TextReplacementConfig.builder()
-                        .match("(\\\\/\\S*)")
-                        .replacement(command)
-                        .once()
-                        .build());
+                .replaceText(TextReplacementConfig.builder().match("(\\\\/\\S*)").replacement(command).once().build());
         event.message(component);
+
     }
+
 }

@@ -18,50 +18,70 @@ import org.bukkit.permissions.PermissionDefault;
 import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 /**
- * Players will need purpurextras.spawnerplace.<mobtype> permission to place spawners of that mob.
+ * Players will need purpurextras.spawnerplace.<mobtype> permission to place
+ * spawners of that mob.
  */
 public class SpawnerPlacementPermissionsModule implements PurpurExtrasModule, Listener {
 
-    protected SpawnerPlacementPermissionsModule() {}
+    protected SpawnerPlacementPermissionsModule() {
+
+    }
 
     private final String spawnerPlacePermission = "purpurextras.spawnerplace";
     private final Map<String, Boolean> mobSpawners = new HashMap<String, Boolean>();
 
     @Override
     public void enable() {
+
         PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         for (EntityType type : EntityType.values()) {
+
             if (type.isAlive() && type.isSpawnable()) {
+
                 String entityPermission = "." + type.toString().toLowerCase(Locale.ENGLISH);
                 mobSpawners.put((spawnerPlacePermission + entityPermission), true);
+
             }
+
         }
+
         registerPermission(spawnerPlacePermission, "Allows player to place spawner", PermissionDefault.OP, mobSpawners);
+
     }
 
     @Override
     public boolean shouldEnable() {
+
         return PurpurExtrasOG.getPurpurConfig()
                 .getBoolean("settings.gameplay-settings.spawner-placement-requires-specific-permission", false);
+
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onSpawnerPlace(BlockPlaceEvent event) {
+
         Player player = event.getPlayer();
         String entityType;
         String entityTypePermission;
         if (event.getBlock().getState(false) instanceof CreatureSpawner spawner) {
+
             entityType = String.valueOf(spawner.getSpawnedType()).toLowerCase(Locale.ENGLISH);
             entityTypePermission = ("." + entityType);
+
         } else {
+
             return;
+
         }
-        if (player.hasPermission(spawnerPlacePermission + entityTypePermission)) return;
+
+        if (player.hasPermission(spawnerPlacePermission + entityTypePermission))
+            return;
         event.setCancelled(true);
-        player.sendMessage(MiniMessage.miniMessage()
-                .deserialize(
-                        "<red>You do not have permission to place a <spawner> spawner!",
+        player.sendMessage(
+                MiniMessage.miniMessage().deserialize("<red>You do not have permission to place a <spawner> spawner!",
                         Placeholder.unparsed("spawner", entityType)));
+
     }
+
 }

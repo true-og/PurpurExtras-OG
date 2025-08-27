@@ -11,13 +11,18 @@ public class ShieldDamageReductionListener implements Listener {
     private final double shieldDamageReduction;
 
     public ShieldDamageReductionListener(double reductionModifier) {
+
         this.shieldDamageReduction = reductionModifier;
+
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onShieldHit(EntityDamageByEntityEvent event) {
-        if (!(event.getEntity() instanceof HumanEntity humanEntity)) return;
-        if (!humanEntity.isBlocking()) return;
+
+        if (!(event.getEntity() instanceof HumanEntity humanEntity))
+            return;
+        if (!humanEntity.isBlocking())
+            return;
 
         double originalDamage = event.getDamage();
         double finalDamage = event.getFinalDamage();
@@ -27,5 +32,7 @@ public class ShieldDamageReductionListener implements Listener {
         double newDamage = finalDamage + newReduction;
 
         event.setDamage(newDamage);
+
     }
+
 }

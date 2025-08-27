@@ -20,9 +20,10 @@ import org.bukkit.potion.PotionEffectType;
 import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 /**
- * If enabled, totem of undying will save players from death in the void and will
- * teleport them to the last place their feet touched the ground.
- * If for any reason that position is not found, they will be teleported to world spawn.
+ * If enabled, totem of undying will save players from death in the void and
+ * will teleport them to the last place their feet touched the ground. If for
+ * any reason that position is not found, they will be teleported to world
+ * spawn.
  */
 public class VoidTotemModule implements PurpurExtrasModule, Listener {
 
@@ -30,67 +31,95 @@ public class VoidTotemModule implements PurpurExtrasModule, Listener {
     private final HashMap<UUID, Location> lastGroundedLocations = new HashMap<>();
 
     protected VoidTotemModule() {
+
         totemEffects.add(new PotionEffect(PotionEffectType.REGENERATION, 20 * 45, 1));
         totemEffects.add(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 20 * 40, 0));
         totemEffects.add(new PotionEffect(PotionEffectType.ABSORPTION, 20 * 5, 1));
+
     }
 
     @Override
     public void enable() {
+
         PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+
     }
 
     @Override
     public boolean shouldEnable() {
+
         return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.totem.work-on-void-death", false);
+
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent event) {
-        if (!event.hasChangedPosition()) return;
+
+        if (!event.hasChangedPosition())
+            return;
         Location location = event.getTo().clone();
-        if (location.subtract(0, 0.05, 0).getBlock().getType().isAir()) return;
+        if (location.subtract(0, 0.05, 0).getBlock().getType().isAir())
+            return;
         lastGroundedLocations.put(event.getPlayer().getUniqueId(), event.getTo().toCenterLocation());
+
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent event) {
+
         lastGroundedLocations.remove(event.getPlayer().getUniqueId());
+
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerDeathInVoid(EntityDamageEvent event) {
-        if (!(event.getEntity() instanceof Player player)) return;
-        if (!event.getCause().equals(EntityDamageEvent.DamageCause.VOID)) return;
-        Location location = player.getLocation();
-        if (location.getY() > location.getWorld().getMinHeight()) return;
 
-        if (player.getHealth() - event.getFinalDamage() > 0) return;
+        if (!(event.getEntity() instanceof Player player))
+            return;
+        if (!event.getCause().equals(EntityDamageEvent.DamageCause.VOID))
+            return;
+        Location location = player.getLocation();
+        if (location.getY() > location.getWorld().getMinHeight())
+            return;
+
+        if (player.getHealth() - event.getFinalDamage() > 0)
+            return;
 
         if (!player.getInventory().getItemInMainHand().getType().equals(Material.TOTEM_OF_UNDYING)
-                && !player.getInventory().getItemInOffHand().getType().equals(Material.TOTEM_OF_UNDYING)) return;
+                && !player.getInventory().getItemInOffHand().getType().equals(Material.TOTEM_OF_UNDYING))
+            return;
 
         event.setCancelled(true);
 
-        Location safeLocation = lastGroundedLocations.getOrDefault(
-                player.getUniqueId(), location.getWorld().getSpawnLocation());
+        Location safeLocation = lastGroundedLocations.getOrDefault(player.getUniqueId(),
+                location.getWorld().getSpawnLocation());
         player.teleportAsync(safeLocation).thenRun(() -> useTotem(player));
+
     }
 
     private void useTotem(Player player) {
+
         ItemStack totem = null;
         if (player.getInventory().getItemInMainHand().getType().equals(Material.TOTEM_OF_UNDYING)) {
+
             totem = player.getInventory().getItemInMainHand();
+
         } else if (player.getInventory().getItemInOffHand().getType().equals(Material.TOTEM_OF_UNDYING)) {
+
             totem = player.getInventory().getItemInOffHand();
+
         }
-        if (totem == null) return;
+
+        if (totem == null)
+            return;
         totem.subtract();
         player.setFallDistance(0);
         player.setHealth(1);
         player.playEffect(EntityEffect.TOTEM_RESURRECT);
         player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
         player.addPotionEffects(this.totemEffects);
+
     }
+
 }

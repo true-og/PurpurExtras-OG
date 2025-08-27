@@ -28,45 +28,63 @@ public class RaidTotemDropsModule implements PurpurExtrasModule, Listener {
     private final Map<UUID, Raider> raiders = new HashMap<>();
 
     protected RaidTotemDropsModule() {
+
         dropChance = PurpurExtrasOG.getPurpurConfig().getInt("settings.raid-totem-drops.chance", 0);
         random = new SplittableRandom();
+
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
     public void onRaidSpawn(RaidSpawnWaveEvent event) {
+
         event.getRaiders().forEach(r -> raiders.put(r.getUniqueId(), r));
+
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
     public void onRaidDeath(EntityDeathEvent event) {
-        if (raiders.get(event.getEntity().getUniqueId()) == null) return;
+
+        if (raiders.get(event.getEntity().getUniqueId()) == null)
+            return;
         raiders.remove(event.getEntity().getUniqueId());
-        if (event.getEntityType() != EntityType.EVOKER) return;
+        if (event.getEntityType() != EntityType.EVOKER)
+            return;
         boolean totem = dropChance >= 100 || random.nextInt(1, 101) <= dropChance;
-        event.getDrops().stream()
-                .filter(i -> i.getType() == Material.TOTEM_OF_UNDYING)
-                .findFirst()
-                .ifPresentOrElse(
-                        i -> {
-                            if (!totem) event.getDrops().remove(i);
-                        },
-                        () -> {
-                            if (totem) event.getDrops().add(new ItemStack(Material.TOTEM_OF_UNDYING));
-                        });
+        event.getDrops().stream().filter(i -> i.getType() == Material.TOTEM_OF_UNDYING).findFirst()
+                .ifPresentOrElse(i ->
+                {
+
+                    if (!totem)
+                        event.getDrops().remove(i);
+
+                }, () -> {
+
+                    if (totem)
+                        event.getDrops().add(new ItemStack(Material.TOTEM_OF_UNDYING));
+
+                });
+
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
     public void onRaidEnd(RaidStopEvent event) {
+
         event.getRaid().getRaiders().stream().map(Entity::getUniqueId).forEach(raiders::remove);
+
     }
 
     @Override
     public void enable() {
+
         Bukkit.getServer().getPluginManager().registerEvents(this, PurpurExtrasOG.getInstance());
+
     }
 
     @Override
     public boolean shouldEnable() {
+
         return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.raid-totem-drops.enabled", false);
+
     }
+
 }

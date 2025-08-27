@@ -16,52 +16,73 @@ import org.bukkit.persistence.PersistentDataType;
 import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 /**
- * If enabled, allows players to dye boss health bars by right-clicking the boss with a dye item.
+ * If enabled, allows players to dye boss health bars by right-clicking the boss
+ * with a dye item.
  */
 public class ColoredBossBarsModule implements PurpurExtrasModule, Listener {
 
     private final NamespacedKey dyeColor = PurpurExtrasOG.key("dyedColor");
 
-    protected ColoredBossBarsModule() {}
+    protected ColoredBossBarsModule() {
+
+    }
 
     @Override
     public void enable() {
+
         PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+
     }
 
     @Override
     public boolean shouldEnable() {
+
         return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.dye-boss-bars", false);
+
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBossBarDye(PlayerInteractEntityEvent event) {
-        if (event.getHand().equals(EquipmentSlot.OFF_HAND)) return;
-        if (!(event.getRightClicked() instanceof Boss bossClicked)) return;
+
+        if (event.getHand().equals(EquipmentSlot.OFF_HAND))
+            return;
+        if (!(event.getRightClicked() instanceof Boss bossClicked))
+            return;
         Player player = event.getPlayer();
-        String materialName =
-                player.getInventory().getItemInMainHand().getType().toString();
-        if (!materialName.contains("_DYE")) return;
+        String materialName = player.getInventory().getItemInMainHand().getType().toString();
+        if (!materialName.contains("_DYE"))
+            return;
         int index = materialName.indexOf("_DYE");
         String bossBarColor = materialName.substring(0, index);
         try {
+
             BarColor.valueOf(bossBarColor);
+
         } catch (IllegalArgumentException e) {
+
             return;
+
         }
+
         bossClicked.getBossBar().setColor(BarColor.valueOf(bossBarColor));
         PersistentDataContainer pdc = bossClicked.getPersistentDataContainer();
         pdc.set(dyeColor, PersistentDataType.STRING, bossBarColor);
+
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBossBarDyeOnLoad(EntityAddToWorldEvent event) {
+
         Entity entity = event.getEntity();
-        if (!(entity instanceof Boss boss)) return;
+        if (!(entity instanceof Boss boss))
+            return;
         PersistentDataContainer pdc = boss.getPersistentDataContainer();
-        if (!pdc.has(dyeColor, PersistentDataType.STRING)) return;
+        if (!pdc.has(dyeColor, PersistentDataType.STRING))
+            return;
         String color = pdc.get(dyeColor, PersistentDataType.STRING);
         boss.getBossBar().setColor(BarColor.valueOf(color));
+
     }
+
 }

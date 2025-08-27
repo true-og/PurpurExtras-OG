@@ -12,40 +12,56 @@ import org.bukkit.inventory.ItemStack;
 import org.purpurmc.purpurextras.PurpurExtrasOG;
 
 /**
- * Makes it so chorus flowers always drop, no matter if they were destroyed directly or not.
+ * Makes it so chorus flowers always drop, no matter if they were destroyed
+ * directly or not.
  */
 public class ChorusFlowerAlwaysDropsModule implements PurpurExtrasModule, Listener {
 
-    protected ChorusFlowerAlwaysDropsModule() {}
+    protected ChorusFlowerAlwaysDropsModule() {
+
+    }
 
     @Override
     public void enable() {
+
         PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+
     }
 
     @Override
     public boolean shouldEnable() {
+
         return PurpurExtrasOG.getPurpurConfig().getBoolean("settings.blocks.chorus-flowers-always-drop", false);
+
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void entityHitChorusFlower(ProjectileHitEvent event) {
-        if (event.getHitBlock() == null) return;
+
+        if (event.getHitBlock() == null)
+            return;
         if (event.getHitBlock().getType().equals(Material.CHORUS_FLOWER)) {
+
             Block chorusFlower = event.getHitBlock();
             event.setCancelled(true);
             chorusFlower.breakNaturally();
             chorusFlower.getWorld().dropItem(chorusFlower.getLocation(), new ItemStack(Material.CHORUS_FLOWER));
+
         }
+
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void chorusFlowerBreak(BlockDestroyEvent event) {
+
         Block block = event.getBlock();
-        if (!(block.getType().equals(Material.CHORUS_FLOWER))) return;
+        if (!(block.getType().equals(Material.CHORUS_FLOWER)))
+            return;
         Location flowerLocation = block.getLocation();
         Material blockMaterial = block.getType();
         flowerLocation.getWorld().dropItem(flowerLocation, new ItemStack(blockMaterial));
+
     }
+
 }

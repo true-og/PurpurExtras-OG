@@ -1,0 +1,101 @@
+settings:
+  rideables:
+    mob-needs-to-be-nametagged-to-ride: false
+  twerk-to-reduce-burn-time:
+    chance: 0.0
+    amount: 0.5
+  block-building-above-nether:
+    height-limit: 128
+    no-permission-message: '<red>Max build height in this world is: <gold><height>'
+    enabled: false
+  chat:
+    send-sleep-percentage-message:
+      player-sleeping: <grey><playername> has fallen asleep. <sleeping> out of <needed>
+        required players in <worldname> are sleeping.
+      skipping-night: <grey>Enough players have now slept! Skipping through the night
+        in <worldname>.
+      enabled: true
+    escape-commands: true
+  mobs:
+    snow_golem:
+      drop-pumpkin-when-sheared: true
+    sheep:
+      jeb-shear-random-color: false
+  dye-boss-bars: false
+  lightning-transforms-entities:
+    entities:
+      villager: no
+      pig: no
+    enabled: false
+  gameplay-settings:
+    open-iron-doors-with-hand: false
+    open-iron-trapdoors-with-hand: true
+    respawn-anchor-needs-charges: true
+    spawner-placement-requires-specific-permission: true
+    run-faster-on-paths:
+      speed-multiplier: 1.2
+      duration: 2
+      path-blocks:
+      - DIRT_PATH
+    cancel-damage-from-pet-owner: true
+    fall-damage-when-jump-boost-applied: true
+  shield:
+    damage-reduction: 0.5
+    cooldown: 0
+  unlock-all-recipes-on-join: true
+  use-notarget-permissions: false
+  items:
+    beehive-lore:
+      bees: '<reset><yellow>Bees: <white><bees>/<maxbees>'
+      honey: '<reset><gold>Honey level: <white><honey>/<maxhoney>'
+      enabled: true
+  leash-snap:
+    sound: minecraft:block.bamboo.break
+    volume: 0.75
+    pitch: 1.50
+    enabled: true
+  totem:
+    work-on-void-death: true
+  blocks:
+    shift-right-click-for-invisible-item-frames: false
+    chorus-flowers-always-drop: true
+  anvil-splits-minecarts: true
+  anvil-splits-boats: true
+  loom:
+    max-layers: 6
+  dispenser:
+    break-blocks:
+      pickaxe: false
+      shovel: false
+      hoe: false
+      axe: false
+      shears: false
+    shears-shear-pumpkin: false
+    puts-discs-in-jukebox: false
+    interact-with-cauldron: false
+  furnace:
+    burn-time:
+      multiplier: 1.0
+      enabled: false
+  anvil-crushes-blocks:
+    blocks:
+      cobblestone: sand
+    enabled: false
+  stonecutter-damage-filter:
+    blacklist:
+    - player
+    enabled: false
+  creeper-squid:
+    enabled: false
+  protect-blocks-with-loot:
+    message: <red>Prevented you from breaking this block because it can regenerate
+      loot. Sneak to break it anyway.
+    allow-breaking-in-sneak: true
+    immune-to-explosions: false
+    message-type: CHAT
+    enabled: false
+  raid-totem-drops:
+    chance: 0
+    enabled: false
+  grindstone:
+    gives-enchants-back: false

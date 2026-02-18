@@ -46,7 +46,6 @@ public final class PurpurExtrasOG extends JavaPlugin {
         }
 
         PurpurExtrasModule.reloadModules();
-        config.saveConfig();
 
     }
 
@@ -68,7 +67,6 @@ public final class PurpurExtrasOG extends JavaPlugin {
 
             config = new PurpurConfig();
             PurpurExtrasModule.reloadModules();
-            config.saveConfig();
             commandSender.sendMessage(Component.text("PurpurExtras configuration reloaded!"));
 
         });

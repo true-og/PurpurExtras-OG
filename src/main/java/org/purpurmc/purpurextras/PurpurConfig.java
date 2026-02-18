@@ -1,40 +1,19 @@
 package org.purpurmc.purpurextras;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
-import java.util.logging.Logger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class PurpurConfig {
 
-    private final Logger logger;
     private FileConfiguration config;
-    private final File configPath;
 
     protected PurpurConfig() {
 
         PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
+        plugin.saveDefaultConfig();
         plugin.reloadConfig();
-        logger = plugin.getLogger();
         config = plugin.getConfig();
-        configPath = new File(plugin.getDataFolder(), "config.yml");
-
-    }
-
-    protected void saveConfig() {
-
-        try {
-
-            config.save(configPath);
-            config = PurpurExtrasOG.getInstance().getConfig();
-
-        } catch (IOException e) {
-
-            logger.severe("Failed to save configuration file! - " + e.getLocalizedMessage());
-
-        }
 
     }
 

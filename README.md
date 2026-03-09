@@ -10,6 +10,8 @@ PurpurExtras is a plugin designed to add all [Purpur](https://github.com/PurpurM
 
 - Lobotomized CreateSusBlockModule.
 
+- Removed OpenIronDoorsWithHandModule (also applies to trapdoors).
+
 - Added more error handling.
 
 ## Contact

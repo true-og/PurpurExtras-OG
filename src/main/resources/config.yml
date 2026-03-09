@@ -28,8 +28,6 @@ settings:
       pig: no
     enabled: false
   gameplay-settings:
-    open-iron-doors-with-hand: false
-    open-iron-trapdoors-with-hand: true
     respawn-anchor-needs-charges: true
     spawner-placement-requires-specific-permission: true
     run-faster-on-paths:

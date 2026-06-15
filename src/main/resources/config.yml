@@ -54,6 +54,7 @@ settings:
     enabled: true
   totem:
     work-on-void-death: true
+    work-from-hotbar: true
   blocks:
     shift-right-click-for-invisible-item-frames: false
     chorus-flowers-always-drop: true

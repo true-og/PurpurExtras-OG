@@ -30,10 +30,19 @@ public class ShieldSettingsModule implements PurpurExtrasModule, Listener {
     public void enable() {
 
         PurpurExtrasOG plugin = PurpurExtrasOG.getInstance();
-        if (shieldDamageReduction != DEFAULT_SHIELD_DAMAGE_REDUCTION) {
+        // OldCombatMechanics owns shield reduction when present,
+        // else both scale blocking and compound. Presence, not
+        // enabled state, since OCM may enable after this module.
+        boolean ocmOwnsShields = plugin.getServer().getPluginManager().getPlugin("OldCombatMechanics") != null;
+
+        if (shieldDamageReduction != DEFAULT_SHIELD_DAMAGE_REDUCTION && !ocmOwnsShields) {
 
             plugin.getServer().getPluginManager()
                     .registerEvents(new ShieldDamageReductionListener(shieldDamageReduction), plugin);
+
+        } else if (shieldDamageReduction != DEFAULT_SHIELD_DAMAGE_REDUCTION) {
+
+            plugin.getLogger().info("Skipping shield damage reduction: OldCombatMechanics owns it.");
 
         }
 

@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 
 public class ShieldDamageReductionListener implements Listener {
 
@@ -24,14 +25,16 @@ public class ShieldDamageReductionListener implements Listener {
         if (!humanEntity.isBlocking())
             return;
 
-        double originalDamage = event.getDamage();
-        double finalDamage = event.getFinalDamage();
-        double reduction = originalDamage - finalDamage;
+        // Scale only the blocking modifier. Writing a post-armour value
+        // into BASE made armour and resistance apply a second time.
+        if (!event.isApplicable(EntityDamageEvent.DamageModifier.BLOCKING))
+            return;
 
-        double newReduction = shieldDamageReduction * reduction;
-        double newDamage = finalDamage + newReduction;
+        double blocking = event.getDamage(EntityDamageEvent.DamageModifier.BLOCKING);
+        if (blocking == 0.0)
+            return;
 
-        event.setDamage(newDamage);
+        event.setDamage(EntityDamageEvent.DamageModifier.BLOCKING, blocking * shieldDamageReduction);
 
     }
 
